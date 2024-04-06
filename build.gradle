@@ -24,7 +24,7 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
-            jvmArgument '-XX:+AllowEnhancedClassRedefinition'
+            jvmArgs.add('-XX:+AllowEnhancedClassRedefinition')
 
             property 'forge.logging.console.level', 'debug'
 
@@ -38,7 +38,7 @@ minecraft {
         server {
             workingDirectory project.file('run/server')
 
-            jvmArgument '-XX:+AllowEnhancedClassRedefinition'
+            jvmArgs.add('-XX:+AllowEnhancedClassRedefinition')
 
             property 'forge.logging.console.level', 'debug'
 
@@ -59,42 +59,6 @@ minecraft {
             mods {
                 exdeorum {
                     source sourceSets.main
-                }
-            }
-        }
-
-        testmodClient {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.console.level', 'debug'
-
-            parent runs.client
-            ideaModule "${project.name}.test"
-
-            mods {
-                modkit {
-                    source sourceSets.main
-                }
-                orestestmod {
-                    source sourceSets.test
-                }
-            }
-        }
-
-        testmodServer {
-            workingDirectory project.file('run/server')
-
-            property 'forge.logging.console.level', 'debug'
-
-            parent runs.server
-            ideaModule "${project.name}.test"
-
-            mods {
-                modkit {
-                    source sourceSets.main
-                }
-                orestestmod {
-                    source sourceSets.test
                 }
             }
         }
