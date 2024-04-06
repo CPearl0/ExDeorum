@@ -24,7 +24,7 @@ import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import thedarkcolour.exdeorum.compat.CompatUtil;
+import thedarkcolour.exdeorum.compat.CompatHelper;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -39,10 +39,10 @@ public class ExDeorumEmiPlugin implements EmiPlugin {
     public void initialize(EmiInitRegistry registry) {
         Set<ItemLike> toRemove = new HashSet<>();
 
-        toRemove.addAll(CompatUtil.getAvailableBarrels(false));
-        toRemove.addAll(CompatUtil.getAvailableSieves(false, false));
-        toRemove.addAll(CompatUtil.getAvailableLavaCrucibles(false));
-        toRemove.addAll(CompatUtil.getAvailableWaterCrucibles(false));
+        toRemove.addAll(CompatHelper.getAvailableBarrels(false));
+        toRemove.addAll(CompatHelper.getAvailableSieves(false, false));
+        toRemove.addAll(CompatHelper.getAvailableLavaCrucibles(false));
+        toRemove.addAll(CompatHelper.getAvailableWaterCrucibles(false));
 
         Set<Item> toRemoveItems = new HashSet<>();
 
