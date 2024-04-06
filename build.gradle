@@ -24,6 +24,8 @@ minecraft {
         client {
             workingDirectory project.file('run')
 
+            jvmArgument '-XX:+AllowEnhancedClassRedefinition'
+
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -35,6 +37,8 @@ minecraft {
 
         server {
             workingDirectory project.file('run/server')
+
+            jvmArgument '-XX:+AllowEnhancedClassRedefinition'
 
             property 'forge.logging.console.level', 'debug'
 
@@ -132,6 +136,10 @@ repositories {
         content { includeGroup 'com.github.thedarkcolour' }
     }
     maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com'
+    }
+    maven {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
         content {
@@ -164,6 +172,9 @@ dependencies {
     implementation(fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}"))
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}"))
     implementation(fg.deobf("curse.maven:reipc-521393:4837449"))
+    // EMI OPTIONAL
+    compileOnly("dev.emi:emi-forge:${emi_version}:api")
+    runtimeOnly("dev.emi:emi-forge:${emi_version}")
     // KubeJS OPTIONAL
     implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
     implementation fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}")
