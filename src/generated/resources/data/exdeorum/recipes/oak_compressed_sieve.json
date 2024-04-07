@@ -6,7 +6,7 @@
       "tag": "forge:rods/wooden"
     },
     "O": {
-      "tag": "minecraft:oak_logs"
+      "item": "minecraft:oak_log"
     },
     "_": {
       "tag": "forge:ingots/iron"

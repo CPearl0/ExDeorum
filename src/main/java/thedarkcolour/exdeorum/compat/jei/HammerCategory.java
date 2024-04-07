@@ -23,19 +23,26 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import thedarkcolour.exdeorum.data.TranslationKeys;
 import thedarkcolour.exdeorum.recipe.hammer.HammerRecipe;
 import thedarkcolour.exdeorum.registry.EItems;
 
+import java.util.function.Supplier;
+
 class HammerCategory extends OneToOneCategory<HammerRecipe> {
-    public HammerCategory(IGuiHelper helper, IDrawable arrow) {
-        super(helper, arrow, helper.createDrawableItemStack(new ItemStack(EItems.DIAMOND_HAMMER.get())), Component.translatable(TranslationKeys.HAMMER_CATEGORY_TITLE));
+    private final RecipeType<HammerRecipe> recipeType;
+
+    public HammerCategory(IGuiHelper helper, IDrawable arrow, Supplier<? extends Item> icon, Component title, RecipeType<HammerRecipe> recipeType) {
+        super(helper, arrow, helper.createDrawableItemStack(new ItemStack(icon.get())), title);
+
+        this.recipeType = recipeType;
     }
 
     @Override
     public RecipeType<HammerRecipe> getRecipeType() {
-        return ExDeorumJeiPlugin.HAMMER;
+        return this.recipeType;
     }
 
     @Override

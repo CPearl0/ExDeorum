@@ -34,6 +34,7 @@ import thedarkcolour.exdeorum.compat.ModIds;
 import thedarkcolour.exdeorum.data.ModCompatData;
 import thedarkcolour.exdeorum.recipe.sieve.FinishedCompressedSieveRecipe;
 import thedarkcolour.exdeorum.recipe.sieve.FinishedSieveRecipe;
+import thedarkcolour.exdeorum.registry.ECompressedBlocks;
 import thedarkcolour.exdeorum.registry.EItems;
 import thedarkcolour.exdeorum.tag.EItemTags;
 
@@ -61,17 +62,17 @@ class SieveRecipes {
             MOSS_BLOCK = ingredient(Items.MOSS_BLOCK);
     // mod condition is null for ex deorum blocks (ex deorum is always last priority)
     private static final Map<Ingredient, Ingredient> COMPRESSED_VARIANTS = ImmutableMap.<Ingredient, Ingredient>builder()
-            .put(DIRT, ingredient(EItemTags.COMPRESSED_DIRT))
-            .put(GRAVEL, ingredient(EItemTags.COMPRESSED_GRAVEL))
-            .put(SAND, ingredient(EItemTags.COMPRESSED_SAND))
-            .put(DUST, ingredient(EItemTags.COMPRESSED_DUST))
-            .put(RED_SAND, ingredient(EItemTags.COMPRESSED_RED_SAND))
-            .put(CRUSHED_DEEPSLATE, ingredient(EItemTags.COMPRESSED_CRUSHED_DEEPSLATE))
-            .put(CRUSHED_BLACKSTONE, ingredient(EItemTags.COMPRESSED_CRUSHED_BLACKSTONE))
-            .put(CRUSHED_NETHERRACK, ingredient(EItemTags.COMPRESSED_CRUSHED_NETHERRACK))
-            .put(SOUL_SAND, ingredient(EItemTags.COMPRESSED_SOUL_SAND))
-            .put(CRUSHED_END_STONE, ingredient(EItemTags.COMPRESSED_CRUSHED_END_STONE))
-            .put(MOSS_BLOCK, ingredient(EItemTags.COMPRESSED_MOSS_BLOCK))
+            .put(DIRT, ingredient(ECompressedBlocks.COMPRESSED_DIRT.getTag()))
+            .put(GRAVEL, ingredient(ECompressedBlocks.COMPRESSED_GRAVEL.getTag()))
+            .put(SAND, ingredient(ECompressedBlocks.COMPRESSED_SAND.getTag()))
+            .put(DUST, ingredient(ECompressedBlocks.COMPRESSED_DUST.getTag()))
+            .put(RED_SAND, ingredient(ECompressedBlocks.COMPRESSED_RED_SAND.getTag()))
+            .put(CRUSHED_DEEPSLATE, ingredient(ECompressedBlocks.COMPRESSED_CRUSHED_DEEPSLATE.getTag()))
+            .put(CRUSHED_BLACKSTONE, ingredient(ECompressedBlocks.COMPRESSED_CRUSHED_BLACKSTONE.getTag()))
+            .put(CRUSHED_NETHERRACK, ingredient(ECompressedBlocks.COMPRESSED_CRUSHED_NETHERRACK.getTag()))
+            .put(SOUL_SAND, ingredient(ECompressedBlocks.COMPRESSED_SOUL_SAND.getTag()))
+            .put(CRUSHED_END_STONE, ingredient(ECompressedBlocks.COMPRESSED_CRUSHED_END_STONE.getTag()))
+            .put(MOSS_BLOCK, ingredient(ECompressedBlocks.COMPRESSED_MOSS_BLOCK.getTag()))
             .build();
 
     static void sieveRecipes(Consumer<FinishedRecipe> writer) {

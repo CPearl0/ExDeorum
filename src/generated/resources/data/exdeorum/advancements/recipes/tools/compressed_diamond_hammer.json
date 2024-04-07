@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:moss_block"
+              "exdeorum:diamond_hammer"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "exdeorum:compressed_moss_block"
+        "recipe": "exdeorum:compressed_diamond_hammer"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "exdeorum:compressed_moss_block"
+      "exdeorum:compressed_diamond_hammer"
     ]
   },
   "sends_telemetry_event": true

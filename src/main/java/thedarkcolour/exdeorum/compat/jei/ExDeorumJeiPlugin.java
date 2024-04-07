@@ -43,6 +43,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.RegistryObject;
 import net.minecraftforge.fml.ModList;
 import thedarkcolour.exdeorum.ExDeorum;
 import thedarkcolour.exdeorum.client.screen.MechanicalHammerScreen;
@@ -57,6 +58,7 @@ import thedarkcolour.exdeorum.recipe.barrel.BarrelCompostRecipe;
 import thedarkcolour.exdeorum.recipe.barrel.BarrelFluidMixingRecipe;
 import thedarkcolour.exdeorum.recipe.barrel.BarrelMixingRecipe;
 import thedarkcolour.exdeorum.recipe.crucible.CrucibleRecipe;
+import thedarkcolour.exdeorum.recipe.hammer.CompressedHammerRecipe;
 import thedarkcolour.exdeorum.recipe.hammer.HammerRecipe;
 import thedarkcolour.exdeorum.registry.EFluids;
 import thedarkcolour.exdeorum.registry.EItems;
@@ -82,9 +84,10 @@ public class ExDeorumJeiPlugin implements IModPlugin {
     static final RecipeType<GroupedSieveRecipe> SIEVE = recipeType("sieve", GroupedSieveRecipe.class);
     static final RecipeType<GroupedSieveRecipe> COMPRESSED_SIEVE = recipeType("compressed_sieve", GroupedSieveRecipe.class);
     static final RecipeType<HammerRecipe> HAMMER = recipeType("hammer", HammerRecipe.class);
+    static final RecipeType<HammerRecipe> COMPRESSED_HAMMER = recipeType("compressed_hammer", CompressedHammerRecipe.class);
     static final RecipeType<CrookJeiRecipe> CROOK = recipeType("crook", CrookJeiRecipe.class);
 
-    private static <T> RecipeType<T> recipeType(String path, Class<T> type) {
+    private static <T> RecipeType<T> recipeType(String path, Class<? extends T> type) {
         // use alternative namespace so that EMI doesn't skip JEI compatibility
         String namespace = ModList.get().isLoaded(ModIds.EMI) ? ExDeorum.ID + "_" + ModIds.EMI : ExDeorum.ID;
         return RecipeType.create(namespace, path, type);
@@ -109,7 +112,8 @@ public class ExDeorumJeiPlugin implements IModPlugin {
         registration.addRecipeCategories(new CrucibleHeatSourcesCategory(registration.getJeiHelpers()));
         registration.addRecipeCategories(new SieveCategory(helper));
         registration.addRecipeCategories(new CompressedSieveCategory(helper));
-        registration.addRecipeCategories(new HammerCategory(helper, arrow));
+        registration.addRecipeCategories(new HammerCategory(helper, arrow, EItems.DIAMOND_HAMMER, Component.translatable(TranslationKeys.HAMMER_CATEGORY_TITLE), HAMMER));
+        registration.addRecipeCategories(new HammerCategory(helper, arrow, EItems.COMPRESSED_DIAMOND_HAMMER, Component.translatable(TranslationKeys.COMPRESSED_HAMMER_CATEGORY_TITLE), COMPRESSED_HAMMER));
         registration.addRecipeCategories(new CrookCategory(registration.getJeiHelpers(), arrow));
     }
 
@@ -143,6 +147,13 @@ public class ExDeorumJeiPlugin implements IModPlugin {
         registration.addRecipeCatalyst(new ItemStack(EItems.DIAMOND_HAMMER.get()), HAMMER);
         registration.addRecipeCatalyst(new ItemStack(EItems.NETHERITE_HAMMER.get()), HAMMER);
         registration.addRecipeCatalyst(new ItemStack(EItems.MECHANICAL_HAMMER.get()), HAMMER);
+
+        registration.addRecipeCatalyst(new ItemStack(EItems.COMPRESSED_WOODEN_HAMMER.get()), COMPRESSED_HAMMER);
+        registration.addRecipeCatalyst(new ItemStack(EItems.COMPRESSED_STONE_HAMMER.get()), COMPRESSED_HAMMER);
+        registration.addRecipeCatalyst(new ItemStack(EItems.COMPRESSED_GOLDEN_HAMMER.get()), COMPRESSED_HAMMER);
+        registration.addRecipeCatalyst(new ItemStack(EItems.COMPRESSED_IRON_HAMMER.get()), COMPRESSED_HAMMER);
+        registration.addRecipeCatalyst(new ItemStack(EItems.COMPRESSED_DIAMOND_HAMMER.get()), COMPRESSED_HAMMER);
+        registration.addRecipeCatalyst(new ItemStack(EItems.COMPRESSED_NETHERITE_HAMMER.get()), COMPRESSED_HAMMER);
 
         registration.addRecipeCatalyst(new ItemStack(EItems.CROOK.get()), CROOK);
         registration.addRecipeCatalyst(new ItemStack(EItems.BONE_CROOK.get()), CROOK);
@@ -193,6 +204,8 @@ public class ExDeorumJeiPlugin implements IModPlugin {
         addRecipes(registration, LAVA_CRUCIBLE, ERecipeTypes.LAVA_CRUCIBLE);
         addRecipes(registration, WATER_CRUCIBLE, ERecipeTypes.WATER_CRUCIBLE);
         addRecipes(registration, HAMMER, ERecipeTypes.HAMMER);
+        //noinspection rawtypes,unchecked
+        addRecipes(registration, COMPRESSED_HAMMER, ((RegistryObject) ERecipeTypes.COMPRESSED_HAMMER));
         var crookRecipes = new ArrayList<CrookJeiRecipe>();
         for (var recipe : Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager().getAllRecipesFor(ERecipeTypes.CROOK.get())) {
             crookRecipes.add(CrookJeiRecipe.create(recipe));

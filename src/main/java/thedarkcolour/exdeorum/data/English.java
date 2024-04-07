@@ -83,6 +83,7 @@ class English {
         english.add(TranslationKeys.CRUCIBLE_HEAT_SOURCE_CATEGORY_TITLE, "Crucible Heat Sources");
         english.add(TranslationKeys.CRUCIBLE_HEAT_SOURCE_CATEGORY_MULTIPLIER, "Melt Rate: %sx");
         english.add(TranslationKeys.HAMMER_CATEGORY_TITLE, "Hammer");
+        english.add(TranslationKeys.COMPRESSED_HAMMER_CATEGORY_TITLE, "Compressed Hammer");
         english.add(TranslationKeys.CROOK_CATEGORY_TITLE, "Crook");
         english.add(TranslationKeys.CROOK_CATEGORY_REQUIRES_STATE, "Requires properties:");
         english.add(TranslationKeys.SIEVE_CATEGORY_TITLE, "Sieve");
