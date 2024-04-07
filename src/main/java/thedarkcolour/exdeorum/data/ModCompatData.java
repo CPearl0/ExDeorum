@@ -34,7 +34,6 @@ import java.util.Map;
 
 // Mocks modded items so that data generation can reference modded items without needing those mods installed.
 public class ModCompatData {
-    // Identity maps because keys are just constants from ModIds
     private static final Map<String, DeferredRegister<Item>> itemRegistries = new HashMap<>();
     private static final Map<String, DeferredRegister<Block>> blockRegistries = new HashMap<>();
 
@@ -212,23 +211,6 @@ public class ModCompatData {
             DUSK_LOG_ITEM = item(ModIds.BLUE_SKIES, "dusk_log"),
             MAPLE_LOG_ITEM = item(ModIds.BLUE_SKIES, "maple_log"),
             CRYSTALLIZED_LOG_ITEM = item(ModIds.BLUE_SKIES, "crystallized_log");
-    // Compressium
-    public static final RegistryObject<Item>
-            COMPRESSED_DIRT_COMPRESSIUM = item(ModIds.COMPRESSIUM, "dirt_1"),
-            COMPRESSED_COBBLESTONE_COMPRESSIUM = item(ModIds.COMPRESSIUM, "cobblestone_1"),
-            COMPRESSED_GRAVEL_COMPRESSIUM = item(ModIds.COMPRESSIUM, "gravel_1"),
-            COMPRESSED_SAND_COMPRESSIUM = item(ModIds.COMPRESSIUM, "sand_1"),
-            COMPRESSED_RED_SAND_COMPRESSIUM = item(ModIds.COMPRESSIUM, "redsand_1"),
-            COMPRESSED_SOUL_SAND_COMPRESSIUM = item(ModIds.COMPRESSIUM, "soulsand_1");
-    // AllTheCompressed
-    public static final RegistryObject<Item>
-            COMPRESSED_DIRT_ATC = item(ModIds.ALL_THE_COMPRESSED, "dirt_1x"),
-            COMPRESSED_COBBLESTONE_ATC = item(ModIds.ALL_THE_COMPRESSED, "cobblestone_1x"),
-            COMPRESSED_GRAVEL_ATC = item(ModIds.ALL_THE_COMPRESSED, "gravel_1x"),
-            COMPRESSED_SAND_ATC = item(ModIds.ALL_THE_COMPRESSED, "sand_1x"),
-            COMPRESSED_RED_SAND_ATC = item(ModIds.ALL_THE_COMPRESSED, "red_sand_1x"),
-            COMPRESSED_SOUL_SAND_ATC = item(ModIds.ALL_THE_COMPRESSED, "soul_sand_1x"),
-            COMPRESSED_MOSS_BLOCK_ATC = item(ModIds.ALL_THE_COMPRESSED, "moss_block_1x");
 
     public static final ResourceLocation[] PAMS_CROPS;
 

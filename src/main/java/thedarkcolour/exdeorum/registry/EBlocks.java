@@ -36,7 +36,7 @@ import thedarkcolour.exdeorum.block.*;
 import static net.minecraft.world.level.block.state.BlockBehaviour.Properties.copy;
 import static net.minecraft.world.level.block.state.BlockBehaviour.Properties.of;
 
-// READER'S NOTE: More blocks are found in DefaultMaterials.java
+// READER'S NOTE: More blocks are found in DefaultMaterials.java and ECompressedBlocks.java
 public class EBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, ExDeorum.ID);
 
@@ -58,25 +58,7 @@ public class EBlocks {
     public static final RegistryObject<LiquidBlock> WITCH_WATER = BLOCKS.register("witch_water", () -> new WitchWaterBlock(EFluids.WITCH_WATER, copy(Blocks.WATER).mapColor(MapColor.COLOR_PURPLE)));
     public static final RegistryObject<EndCakeBlock> END_CAKE = BLOCKS.register("end_cake", () -> new EndCakeBlock(of().noLootTable().mapColor(MapColor.COLOR_BLACK).forceSolidOn().strength(0.5F).sound(SoundType.WOOL).pushReaction(PushReaction.BLOCK)));
 
-    // Compressed blocks
-    public static final RegistryObject<Block> COMPRESSED_DIRT = compressed(Blocks.DIRT);
-    public static final RegistryObject<Block> COMPRESSED_GRAVEL = compressed(Blocks.GRAVEL);
-    public static final RegistryObject<Block> COMPRESSED_SAND = compressed(Blocks.SAND);
-    public static final RegistryObject<Block> COMPRESSED_DUST = compressed(DUST);
-    public static final RegistryObject<Block> COMPRESSED_RED_SAND = compressed(Blocks.RED_SAND);
-    public static final RegistryObject<Block> COMPRESSED_CRUSHED_DEEPSLATE = compressed(CRUSHED_DEEPSLATE);
-    public static final RegistryObject<Block> COMPRESSED_CRUSHED_BLACKSTONE = compressed(CRUSHED_BLACKSTONE);
-    public static final RegistryObject<Block> COMPRESSED_CRUSHED_NETHERRACK = compressed(CRUSHED_NETHERRACK);
-    public static final RegistryObject<Block> COMPRESSED_SOUL_SAND = compressed(Blocks.SOUL_SAND);
-    public static final RegistryObject<Block> COMPRESSED_CRUSHED_END_STONE = compressed(CRUSHED_END_STONE);
-    public static final RegistryObject<Block> COMPRESSED_MOSS_BLOCK = compressed(Blocks.MOSS_BLOCK);
-
-    @SuppressWarnings("deprecation")
-    private static RegistryObject<Block> compressed(Block block) {
-        return BLOCKS.register("compressed_" + BuiltInRegistries.BLOCK.getKey(block).getPath(), () -> new Block(copy(block)));
-    }
-
-    private static RegistryObject<Block> compressed(RegistryObject<Block> block) {
-        return BLOCKS.register("compressed_" + block.getId().getPath(), () -> new Block(copy(block.get())));
+    static {
+        ECompressedBlocks.register();
     }
 }

@@ -1,0 +1,37 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "ars_nouveau"
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "misc",
+        "key": {
+          "I": {
+            "tag": "forge:rods/wooden"
+          },
+          "O": {
+            "item": "ars_nouveau:green_archwood_log"
+          },
+          "_": {
+            "tag": "forge:ingots/iron"
+          }
+        },
+        "pattern": [
+          "O O",
+          "O_O",
+          "I I"
+        ],
+        "result": {
+          "item": "exdeorum:green_archwood_compressed_sieve"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

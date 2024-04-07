@@ -71,12 +71,12 @@ public class EItems {
     public static final RegistryObject<Item> NETHERITE_HAMMER = ITEMS.register("netherite_hammer", () -> new HammerItem(Tiers.NETHERITE, props()));
 
     // Compressed Hammers
-    public static final RegistryObject<Item> WOODEN_COMPRESSED_HAMMER = ITEMS.register("wooden_compressed_hammer", () -> new CompressedHammerItem(Tiers.WOOD, props()));
-    public static final RegistryObject<Item> STONE_COMPRESSED_HAMMER = ITEMS.register("stone_compressed_hammer", () -> new CompressedHammerItem(Tiers.STONE, props()));
-    public static final RegistryObject<Item> GOLDEN_COMPRESSED_HAMMER = ITEMS.register("golden_compressed_hammer", () -> new CompressedHammerItem(Tiers.GOLD, props()));
-    public static final RegistryObject<Item> IRON_COMPRESSED_HAMMER = ITEMS.register("iron_compressed_hammer", () -> new CompressedHammerItem(Tiers.IRON, props()));
-    public static final RegistryObject<Item> DIAMOND_COMPRESSED_HAMMER = ITEMS.register("diamond_compressed_hammer", () -> new CompressedHammerItem(Tiers.DIAMOND, props()));
-    public static final RegistryObject<Item> NETHERITE_COMPRESSED_HAMMER = ITEMS.register("netherite_compressed_hammer", () -> new CompressedHammerItem(Tiers.NETHERITE, props()));
+    public static final RegistryObject<Item> COMPRESSED_WOODEN_HAMMER = ITEMS.register("compressed_wooden_hammer", () -> new CompressedHammerItem(Tiers.WOOD, props()));
+    public static final RegistryObject<Item> COMPRESSED_STONE_HAMMER = ITEMS.register("compressed_stone_hammer", () -> new CompressedHammerItem(Tiers.STONE, props()));
+    public static final RegistryObject<Item> COMPRESSED_GOLDEN_HAMMER = ITEMS.register("compressed_golden_hammer", () -> new CompressedHammerItem(Tiers.GOLD, props()));
+    public static final RegistryObject<Item> COMPRESSED_IRON_HAMMER = ITEMS.register("compressed_iron_hammer", () -> new CompressedHammerItem(Tiers.IRON, props()));
+    public static final RegistryObject<Item> COMPRESSED_DIAMOND_HAMMER = ITEMS.register("compressed_diamond_hammer", () -> new CompressedHammerItem(Tiers.DIAMOND, props()));
+    public static final RegistryObject<Item> COMPRESSED_NETHERITE_HAMMER = ITEMS.register("compressed_netherite_hammer", () -> new CompressedHammerItem(Tiers.NETHERITE, props()));
 
     // Ore Chunks
     public static final RegistryObject<Item> IRON_ORE_CHUNK = registerSimpleItem("iron_ore_chunk");
@@ -153,18 +153,6 @@ public class EItems {
     public static final RegistryObject<BlockItem> CRUSHED_DEEPSLATE = registerItemBlock(EBlocks.CRUSHED_DEEPSLATE);
     public static final RegistryObject<BlockItem> CRUSHED_BLACKSTONE = registerItemBlock(EBlocks.CRUSHED_BLACKSTONE);
 
-    public static final RegistryObject<BlockItem> COMPRESSED_DIRT = registerItemBlock(EBlocks.COMPRESSED_DIRT);
-    public static final RegistryObject<BlockItem> COMPRESSED_GRAVEL = registerItemBlock(EBlocks.COMPRESSED_GRAVEL);
-    public static final RegistryObject<BlockItem> COMPRESSED_SAND = registerItemBlock(EBlocks.COMPRESSED_SAND);
-    public static final RegistryObject<BlockItem> COMPRESSED_DUST = registerItemBlock(EBlocks.COMPRESSED_DUST);
-    public static final RegistryObject<BlockItem> COMPRESSED_RED_SAND = registerItemBlock(EBlocks.COMPRESSED_RED_SAND);
-    public static final RegistryObject<BlockItem> COMPRESSED_CRUSHED_DEEPSLATE = registerItemBlock(EBlocks.COMPRESSED_CRUSHED_DEEPSLATE);
-    public static final RegistryObject<BlockItem> COMPRESSED_CRUSHED_BLACKSTONE = registerItemBlock(EBlocks.COMPRESSED_CRUSHED_BLACKSTONE);
-    public static final RegistryObject<BlockItem> COMPRESSED_CRUSHED_NETHERRACK = registerItemBlock(EBlocks.COMPRESSED_CRUSHED_NETHERRACK);
-    public static final RegistryObject<BlockItem> COMPRESSED_SOUL_SAND = registerItemBlock(EBlocks.COMPRESSED_SOUL_SAND);
-    public static final RegistryObject<BlockItem> COMPRESSED_CRUSHED_END_STONE = registerItemBlock(EBlocks.COMPRESSED_CRUSHED_END_STONE);
-    public static final RegistryObject<BlockItem> COMPRESSED_MOSS_BLOCK = registerItemBlock(EBlocks.COMPRESSED_MOSS_BLOCK);
-
     // Mechanical Sieves
     public static final RegistryObject<BlockItem> MECHANICAL_SIEVE = registerItemBlock(EBlocks.MECHANICAL_SIEVE);
     public static final RegistryObject<BlockItem> MECHANICAL_HAMMER = registerItemBlock(EBlocks.MECHANICAL_HAMMER);
@@ -194,17 +182,26 @@ public class EItems {
         output.accept(CRUSHED_DEEPSLATE.get());
         output.accept(CRUSHED_BLACKSTONE.get());
 
-        output.accept(COMPRESSED_DIRT.get());
-        output.accept(COMPRESSED_GRAVEL.get());
-        output.accept(COMPRESSED_SAND.get());
-        output.accept(COMPRESSED_DUST.get());
-        output.accept(COMPRESSED_RED_SAND.get());
-        output.accept(COMPRESSED_CRUSHED_DEEPSLATE.get());
-        output.accept(COMPRESSED_CRUSHED_BLACKSTONE.get());
-        output.accept(COMPRESSED_CRUSHED_NETHERRACK.get());
-        output.accept(COMPRESSED_SOUL_SAND.get());
-        output.accept(COMPRESSED_CRUSHED_END_STONE.get());
-        output.accept(COMPRESSED_MOSS_BLOCK.get());
+        output.accept(ECompressedBlocks.COMPRESSED_DIRT.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_COBBLESTONE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_DIORITE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_GRANITE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_ANDESITE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_GRAVEL.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_SAND.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_DUST.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_RED_SAND.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_DEEPSLATE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_COBBLED_DEEPSLATE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_NETHERRACK.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_BLACKSTONE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_END_STONE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_CRUSHED_DEEPSLATE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_CRUSHED_BLACKSTONE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_CRUSHED_NETHERRACK.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_SOUL_SAND.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_CRUSHED_END_STONE.getItem());
+        output.accept(ECompressedBlocks.COMPRESSED_MOSS_BLOCK.getItem());
 
         output.accept(END_CAKE.get());
         output.accept(RANDOM_ARMOR_TRIM.get());
@@ -232,12 +229,12 @@ public class EItems {
         output.accept(IRON_HAMMER.get());
         output.accept(DIAMOND_HAMMER.get());
         output.accept(NETHERITE_HAMMER.get());
-        output.accept(WOODEN_COMPRESSED_HAMMER.get());
-        output.accept(STONE_COMPRESSED_HAMMER.get());
-        output.accept(GOLDEN_COMPRESSED_HAMMER.get());
-        output.accept(IRON_COMPRESSED_HAMMER.get());
-        output.accept(DIAMOND_COMPRESSED_HAMMER.get());
-        output.accept(NETHERITE_COMPRESSED_HAMMER.get());
+        output.accept(COMPRESSED_WOODEN_HAMMER.get());
+        output.accept(COMPRESSED_STONE_HAMMER.get());
+        output.accept(COMPRESSED_GOLDEN_HAMMER.get());
+        output.accept(COMPRESSED_IRON_HAMMER.get());
+        output.accept(COMPRESSED_DIAMOND_HAMMER.get());
+        output.accept(COMPRESSED_NETHERITE_HAMMER.get());
         output.accept(IRON_ORE_CHUNK.get());
         output.accept(COPPER_ORE_CHUNK.get());
         output.accept(GOLD_ORE_CHUNK.get());

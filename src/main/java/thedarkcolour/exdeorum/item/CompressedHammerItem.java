@@ -48,6 +48,6 @@ public class CompressedHammerItem extends HammerItem {
 
     @Override
     public int getBurnTime(ItemStack stack, @Nullable RecipeType<?> recipeType) {
-        return this == EItems.WOODEN_COMPRESSED_HAMMER.get() ? 200 : 0;
+        return this == EItems.COMPRESSED_WOODEN_HAMMER.get() ? 200 : 0;
     }
 }

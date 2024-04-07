@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:red_sand"
+              "exdeorum:compressed_blackstone"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "exdeorum:compressed_red_sand"
+        "recipe": "minecraft:blackstone_from_compressed_blackstone"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "exdeorum:compressed_red_sand"
+      "minecraft:blackstone_from_compressed_blackstone"
     ]
   },
-  "sends_telemetry_event": true
+  "sends_telemetry_event": false
 }

@@ -4,6 +4,10 @@
     {
       "id": "allthecompressed:soul_sand_1x",
       "required": false
+    },
+    {
+      "id": "compressium:soul_sand_1",
+      "required": false
     }
   ]
 }

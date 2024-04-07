@@ -23,10 +23,12 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import thedarkcolour.exdeorum.ExDeorum;
+import thedarkcolour.exdeorum.registry.ECompressedBlocks;
 
 public class EItemTags {
     public static final TagKey<Item> CROOKS = tag("crooks");
     public static final TagKey<Item> HAMMERS = tag("hammers");
+    public static final TagKey<Item> COMPRESSED_HAMMERS = tag("compressed_hammers");
     public static final TagKey<Item> SIEVE_MESHES = tag("sieve_meshes");
     public static final TagKey<Item> PEBBLES = tag("pebbles");
     public static final TagKey<Item> END_CAKE_MATERIAL = tag("end_cake_materials");
@@ -51,18 +53,7 @@ public class EItemTags {
     public static final TagKey<Item> ORES_LITHIUM = forgeTag("ores/lithium");
     public static final TagKey<Item> ORES_BORON = forgeTag("ores/boron");
 
-    // Compressed tags
-    public static final TagKey<Item> COMPRESSED_DIRT = tag("compressed/dirt");
-    public static final TagKey<Item> COMPRESSED_GRAVEL = tag("compressed/gravel");
-    public static final TagKey<Item> COMPRESSED_SAND = tag("compressed/sand");
-    public static final TagKey<Item> COMPRESSED_DUST = tag("compressed/dust");
-    public static final TagKey<Item> COMPRESSED_RED_SAND = tag("compressed/red_sand");
-    public static final TagKey<Item> COMPRESSED_CRUSHED_DEEPSLATE = tag("compressed/crushed_deepslate");
-    public static final TagKey<Item> COMPRESSED_CRUSHED_BLACKSTONE = tag("compressed/crushed_blackstone");
-    public static final TagKey<Item> COMPRESSED_CRUSHED_NETHERRACK = tag("compressed/crushed_netherrack");
-    public static final TagKey<Item> COMPRESSED_SOUL_SAND = tag("compressed/soul_sand");
-    public static final TagKey<Item> COMPRESSED_CRUSHED_END_STONE = tag("compressed/crushed_end_stone");
-    public static final TagKey<Item> COMPRESSED_MOSS_BLOCK = tag("compressed/moss_block");
+    public static final TagKey<Item> COMPRESSED_SANDS = tag("compressed/sands");
 
     public static TagKey<Item> tag(String name) {
         return ItemTags.create(new ResourceLocation(ExDeorum.ID, name));

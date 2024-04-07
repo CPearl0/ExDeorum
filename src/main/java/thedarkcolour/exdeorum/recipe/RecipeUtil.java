@@ -158,6 +158,11 @@ public final class RecipeUtil {
         return hammerRecipeCache.getAllRecipes();
     }
 
+    @Nullable
+    public static HammerRecipe getCompressedHammerRecipe(Item itemForm) {
+        return compressedHammerRecipeCache.getRecipe(itemForm);
+    }
+
     public static Collection<CompressedHammerRecipe> getCachedCompressedHammerRecipes() {
         return compressedHammerRecipeCache.getAllRecipes();
     }
