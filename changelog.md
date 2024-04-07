@@ -1,3 +1,8 @@
+## Ex Deorum 1.30
+- EMI compatibility
+- Compressed hammers, sieves, and blocks
+- Compatibility with AllTheCompressed and Compressium (however, AllTheCompressed is better because it has more blocks than Compressium.)
+
 ## Ex Deorum 1.29
 - Add a config option to disable the automated_sieve nerf (now you can enable machines to use multiple sieves simultaneously)
 
