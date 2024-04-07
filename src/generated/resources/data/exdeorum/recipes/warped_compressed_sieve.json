@@ -6,7 +6,7 @@
       "tag": "forge:rods/wooden"
     },
     "O": {
-      "tag": "minecraft:warped_stems"
+      "item": "minecraft:warped_stem"
     },
     "_": {
       "tag": "forge:ingots/iron"

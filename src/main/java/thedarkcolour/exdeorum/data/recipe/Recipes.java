@@ -22,6 +22,7 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
@@ -61,22 +62,25 @@ import thedarkcolour.exdeorum.recipe.BlockPredicate;
 import thedarkcolour.exdeorum.recipe.crook.FinishedCrookRecipe;
 import thedarkcolour.exdeorum.recipe.crucible.FinishedCrucibleHeatRecipe;
 import thedarkcolour.exdeorum.recipe.crucible.FinishedCrucibleRecipe;
+import thedarkcolour.exdeorum.recipe.hammer.FinishedCompressedHammerRecipe;
 import thedarkcolour.exdeorum.recipe.hammer.FinishedHammerRecipe;
 import thedarkcolour.exdeorum.registry.EBlocks;
+import thedarkcolour.exdeorum.registry.ECompressedBlocks;
 import thedarkcolour.exdeorum.registry.EFluids;
 import thedarkcolour.exdeorum.registry.EItems;
 import thedarkcolour.exdeorum.registry.ERecipeSerializers;
 import thedarkcolour.exdeorum.tag.EItemTags;
 import thedarkcolour.modkit.data.MKRecipeProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static net.minecraft.world.level.storage.loot.providers.number.BinomialDistributionGenerator.binomial;
+import static net.minecraft.world.level.storage.loot.providers.number.ConstantValue.exactly;
 import static net.minecraft.world.level.storage.loot.providers.number.UniformGenerator.between;
-import static thedarkcolour.modkit.data.MKRecipeProvider.ingredient;
-import static thedarkcolour.modkit.data.MKRecipeProvider.path;
+import static thedarkcolour.modkit.data.MKRecipeProvider.*;
 
 public class Recipes {
     private static final Ingredient SPORES_AND_SEEDS = ingredient(EItems.GRASS_SEEDS, EItems.MYCELIUM_SPORES, EItems.WARPED_NYLIUM_SPORES, EItems.CRIMSON_NYLIUM_SPORES);
@@ -87,6 +91,7 @@ public class Recipes {
         SieveRecipes.sieveRecipes(writer);
         crucibleRecipes(writer);
         hammerRecipes(writer);
+        compressedHammerRecipes(writer);
         crookRecipes(writer);
         crucibleHeatSources(writer);
         barrelCompostRecipes(writer);
@@ -199,18 +204,40 @@ public class Recipes {
         recipes.grid2x2(Items.COPPER_ORE, ingredient(EItems.COPPER_ORE_CHUNK));
         recipes.grid2x2(Items.MOSS_BLOCK, ingredient(EItems.GRASS_SEEDS));
 
+        // Compressed hammers
+        recipes.grid3x3(RecipeCategory.TOOLS, EItems.COMPRESSED_WOODEN_HAMMER.get(), ingredient(EItems.WOODEN_HAMMER));
+        recipes.grid3x3(RecipeCategory.TOOLS, EItems.COMPRESSED_STONE_HAMMER.get(), ingredient(EItems.STONE_HAMMER));
+        recipes.grid3x3(RecipeCategory.TOOLS, EItems.COMPRESSED_GOLDEN_HAMMER.get(), ingredient(EItems.GOLDEN_HAMMER));
+        recipes.grid3x3(RecipeCategory.TOOLS, EItems.COMPRESSED_IRON_HAMMER.get(), ingredient(EItems.IRON_HAMMER));
+        recipes.grid3x3(RecipeCategory.TOOLS, EItems.COMPRESSED_DIAMOND_HAMMER.get(), ingredient(EItems.DIAMOND_HAMMER));
+        recipes.grid3x3(RecipeCategory.TOOLS, EItems.COMPRESSED_NETHERITE_HAMMER.get(), ingredient(EItems.NETHERITE_HAMMER));
+
         // Compressed blocks
-        recipes.storage3x3(EBlocks.COMPRESSED_DIRT.get(), Items.DIRT);
-        recipes.storage3x3(EBlocks.COMPRESSED_GRAVEL.get(), Items.GRAVEL);
-        recipes.storage3x3(EBlocks.COMPRESSED_SAND.get(), Items.SAND);
-        recipes.storage3x3(EBlocks.COMPRESSED_DUST.get(), EItems.DUST.get());
-        recipes.storage3x3(EBlocks.COMPRESSED_RED_SAND.get(), Items.RED_SAND);
-        recipes.storage3x3(EBlocks.COMPRESSED_CRUSHED_DEEPSLATE.get(), EItems.CRUSHED_DEEPSLATE.get());
-        recipes.storage3x3(EBlocks.COMPRESSED_CRUSHED_BLACKSTONE.get(), EItems.CRUSHED_BLACKSTONE.get());
-        recipes.storage3x3(EBlocks.COMPRESSED_CRUSHED_NETHERRACK.get(), EItems.CRUSHED_NETHERRACK.get());
-        recipes.storage3x3(EBlocks.COMPRESSED_SOUL_SAND.get(), Items.SOUL_SAND);
-        recipes.storage3x3(EBlocks.COMPRESSED_CRUSHED_END_STONE.get(), EItems.CRUSHED_END_STONE.get());
-        recipes.storage3x3(EBlocks.COMPRESSED_MOSS_BLOCK.get(), Items.MOSS_BLOCK);
+        for (var variant : ECompressedBlocks.ALL_VARIANTS) {
+            var storage = variant.getBlock();
+            var material = variant.getBase();
+
+            // Auto disable my recipe when other "compressed" mods are present
+            if (variant.hasCompressium() || variant.hasAtc()) {
+                var conditions = new ArrayList<ICondition>();
+                if (variant.hasAtc()) {
+                    conditions.add(modNotInstalled(ModIds.ALL_THE_COMPRESSED));
+                }
+                if (variant.hasCompressium()) {
+                    conditions.add(modNotInstalled(ModIds.COMPRESSIUM));
+                }
+                recipes.conditional(path(storage), conditions, newWriter -> {
+                    recipes.grid3x3(RecipeCategory.BUILDING_BLOCKS, storage, Ingredient.of(material));
+                });
+            } else {
+                recipes.grid3x3(RecipeCategory.BUILDING_BLOCKS, storage, Ingredient.of(material));
+            }
+            // still allow uncrafting
+            ShapelessRecipeBuilder fromStorage = new ShapelessRecipeBuilder(RecipeCategory.MISC, material, 9);
+            unlockedByHaving(fromStorage, storage);
+            fromStorage.requires(storage);
+            fromStorage.save(writer, id(material).withSuffix("_from_" + id(storage).getPath()));
+        }
 
         // Compressed sieves
         compressedSieve(recipes, DefaultMaterials.OAK_COMPRESSED_SIEVE, ingredient(Items.OAK_LOG));
@@ -351,7 +378,7 @@ public class Recipes {
             recipe.pattern("WCW");
             recipe.pattern("CSC");
             recipe.pattern("WCW");
-            MKRecipeProvider.unlockedByHaving(recipe, EItems.WOOD_CHIPPINGS.get());
+            unlockedByHaving(recipe, EItems.WOOD_CHIPPINGS.get());
         });
         recipes.shapedCrafting(RecipeCategory.MISC, EItems.MECHANICAL_SIEVE.get(), recipe -> {
             recipe.define('#', Items.IRON_BLOCK);
@@ -361,7 +388,7 @@ public class Recipes {
             recipe.pattern("#G#");
             recipe.pattern("IHI");
             recipe.pattern("I I");
-            MKRecipeProvider.unlockedByHaving(recipe, Items.HOPPER);
+            unlockedByHaving(recipe, Items.HOPPER);
         });
         recipes.shapedCrafting(RecipeCategory.MISC, EItems.MECHANICAL_HAMMER.get(), recipe -> {
             recipe.define('#', Items.IRON_BLOCK);
@@ -371,7 +398,7 @@ public class Recipes {
             recipe.pattern("III");
             recipe.pattern("ITI");
             recipe.pattern("#H#");
-            MKRecipeProvider.unlockedByHaving(recipe, Items.HOPPER);
+            unlockedByHaving(recipe, Items.HOPPER);
         });
     }
 
@@ -551,9 +578,9 @@ public class Recipes {
         hammerRecipe(writer, "crushing_red_sandstone", ingredient(Items.RED_SANDSTONE, Items.CUT_RED_SANDSTONE, Items.CHISELED_RED_SANDSTONE, Items.SMOOTH_RED_SANDSTONE), Items.RED_SAND);
         hammerRecipe(writer, "crushing_stone_bricks", ingredient(Items.STONE_BRICKS), Items.CRACKED_STONE_BRICKS);
 
-        hammerRecipe(writer, "stone_pebbles", ingredient(Items.STONE, Items.STONE_BRICKS, Items.CHISELED_STONE_BRICKS, Items.CRACKED_STONE_BRICKS), EItems.STONE_PEBBLE.get(), new UniformGenerator(ConstantValue.exactly(1), ConstantValue.exactly(6)));
+        hammerRecipe(writer, "stone_pebbles", ingredient(Items.STONE, Items.STONE_BRICKS, Items.CHISELED_STONE_BRICKS, Items.CRACKED_STONE_BRICKS), EItems.STONE_PEBBLE.get(), new UniformGenerator(exactly(1), exactly(6)));
         hammerRecipe(writer, "basalt", ingredient(Items.POLISHED_BASALT, Items.SMOOTH_BASALT), Items.BASALT);
-        hammerRecipe(writer, "wood_chippings", ingredient(ItemTags.LOGS), EItems.WOOD_CHIPPINGS.get(), new UniformGenerator(ConstantValue.exactly(3), ConstantValue.exactly(8)));
+        hammerRecipe(writer, "wood_chippings", ingredient(ItemTags.LOGS), EItems.WOOD_CHIPPINGS.get(), new UniformGenerator(exactly(3), exactly(8)));
 
         hammerRecipe(writer, "tube_coral", ingredient(Items.TUBE_CORAL_BLOCK), Items.TUBE_CORAL);
         hammerRecipe(writer, "brain_coral", ingredient(Items.BRAIN_CORAL_BLOCK), Items.BRAIN_CORAL);
@@ -570,8 +597,24 @@ public class Recipes {
         hammerRecipe(writer, "pointed_dripstone", ingredient(Items.DRIPSTONE_BLOCK), Items.POINTED_DRIPSTONE, between(2, 4));
     }
 
+    private static void compressedHammerRecipes(Consumer<FinishedRecipe> writer) {
+        compressedHammerRecipe(writer, Items.GRAVEL, ingredient(ECompressedBlocks.COMPRESSED_COBBLESTONE.getTag(), ECompressedBlocks.COMPRESSED_DIORITE.getTag(), ECompressedBlocks.COMPRESSED_GRANITE.getTag(), ECompressedBlocks.COMPRESSED_ANDESITE.getTag()));
+        compressedHammerRecipe(writer, Items.SAND, ingredient(ECompressedBlocks.COMPRESSED_GRAVEL.getTag()));
+        compressedHammerRecipe(writer, EItems.DUST.get(), ingredient(EItemTags.COMPRESSED_SANDS));
+
+        compressedHammerRecipe(writer, EItems.CRUSHED_DEEPSLATE.get(), ingredient(ECompressedBlocks.COMPRESSED_DEEPSLATE.getTag(), ECompressedBlocks.COMPRESSED_COBBLED_DEEPSLATE.getTag()));
+        compressedHammerRecipe(writer, EItems.CRUSHED_NETHERRACK.get(), ingredient(ECompressedBlocks.COMPRESSED_NETHERRACK.getTag()));
+        compressedHammerRecipe(writer, EItems.CRUSHED_BLACKSTONE.get(), ingredient(ECompressedBlocks.COMPRESSED_BLACKSTONE.getTag()));
+        compressedHammerRecipe(writer, EItems.CRUSHED_END_STONE.get(), ingredient(ECompressedBlocks.COMPRESSED_END_STONE.getTag()));
+        compressedHammerRecipe(writer, Items.RED_SAND, ingredient(ECompressedBlocks.COMPRESSED_CRUSHED_NETHERRACK.getTag()));
+    }
+
+    private static void compressedHammerRecipe(Consumer<FinishedRecipe> writer, ItemLike result, Ingredient block) {
+        writer.accept(new FinishedCompressedHammerRecipe(modLoc("compressed_hammer/" + path(result)), block, result.asItem(), exactly(9)));
+    }
+
     private static void hammerRecipe(Consumer<FinishedRecipe> writer, String name, Ingredient block, ItemLike result) {
-        hammerRecipe(writer, name, block, result, ConstantValue.exactly(1f));
+        hammerRecipe(writer, name, block, result, exactly(1f));
     }
 
     private static void hammerRecipe(Consumer<FinishedRecipe> writer, String name, Ingredient block, ItemLike result, NumberProvider resultAmount) {
@@ -734,6 +777,10 @@ public class Recipes {
 
     static ICondition modInstalled(String modid) {
         return new ModLoadedCondition(modid);
+    }
+
+    static ICondition modNotInstalled(String modid) {
+        return new NotCondition(modInstalled(modid));
     }
 
     static final ICondition AE2 = modInstalled(ModIds.APPLIED_ENERGISTICS_2);

@@ -28,6 +28,7 @@ import net.minecraftforge.client.model.generators.loaders.CompositeModelBuilder;
 import net.minecraftforge.registries.ForgeRegistries;
 import thedarkcolour.exdeorum.material.DefaultMaterials;
 import thedarkcolour.exdeorum.registry.EBlocks;
+import thedarkcolour.exdeorum.registry.ECompressedBlocks;
 import thedarkcolour.modkit.data.MKBlockModelProvider;
 
 import java.util.Objects;
@@ -40,17 +41,9 @@ class BlockModels {
         models.simpleBlock(EBlocks.CRUSHED_DEEPSLATE.get());
         models.simpleBlock(EBlocks.CRUSHED_BLACKSTONE.get());
 
-        compressedBlock(models, EBlocks.COMPRESSED_DIRT.get(), Blocks.DIRT);
-        compressedBlock(models, EBlocks.COMPRESSED_GRAVEL.get(), Blocks.GRAVEL);
-        compressedBlock(models, EBlocks.COMPRESSED_SAND.get(), Blocks.SAND);
-        compressedBlock(models, EBlocks.COMPRESSED_DUST.get(), EBlocks.DUST.get());
-        compressedBlock(models, EBlocks.COMPRESSED_RED_SAND.get(), Blocks.RED_SAND);
-        compressedBlock(models, EBlocks.COMPRESSED_CRUSHED_DEEPSLATE.get(), EBlocks.CRUSHED_DEEPSLATE.get());
-        compressedBlock(models, EBlocks.COMPRESSED_CRUSHED_BLACKSTONE.get(), EBlocks.CRUSHED_BLACKSTONE.get());
-        compressedBlock(models, EBlocks.COMPRESSED_CRUSHED_NETHERRACK.get(), EBlocks.CRUSHED_NETHERRACK.get());
-        compressedBlock(models, EBlocks.COMPRESSED_SOUL_SAND.get(), Blocks.SOUL_SAND);
-        compressedBlock(models, EBlocks.COMPRESSED_CRUSHED_END_STONE.get(), EBlocks.CRUSHED_END_STONE.get());
-        compressedBlock(models, EBlocks.COMPRESSED_MOSS_BLOCK.get(), Blocks.MOSS_BLOCK);
+        for (var variant : ECompressedBlocks.ALL_VARIANTS) {
+            compressedBlock(models, variant.getBlock(), variant.getBase());
+        }
 
         // Barrels
         barrel(models, DefaultMaterials.OAK_BARREL.getBlock(), Blocks.OAK_PLANKS);

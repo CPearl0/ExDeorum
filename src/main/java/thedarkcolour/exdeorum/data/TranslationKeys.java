@@ -70,6 +70,7 @@ public class TranslationKeys {
     public static final String CRUCIBLE_HEAT_SOURCE_CATEGORY_TITLE = "gui." + ExDeorum.ID + ".category.crucible_heat_source";
     public static final String CRUCIBLE_HEAT_SOURCE_CATEGORY_MULTIPLIER = "gui." + ExDeorum.ID + ".category.crucible_heat_source.multiplier";
     public static final String HAMMER_CATEGORY_TITLE = "gui." + ExDeorum.ID + ".category.hammer";
+    public static final String COMPRESSED_HAMMER_CATEGORY_TITLE = "gui." + ExDeorum.ID + ".category.compressed_hammer";
     public static final String CROOK_CATEGORY_TITLE = "gui." + ExDeorum.ID + ".category.crook";
     public static final String CROOK_CATEGORY_REQUIRES_STATE = "gui." + ExDeorum.ID + ".category.crook.requires_state";
     public static final String SIEVE_CATEGORY_TITLE = "gui." + ExDeorum.ID + ".category.sieve";

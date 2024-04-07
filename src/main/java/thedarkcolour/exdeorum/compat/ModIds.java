@@ -47,4 +47,5 @@ public class ModIds {
     public static final String EMI = "emi";
     public static final String INVENTORY_SORTER = "inventorysorter";
     public static final String REI_PC = "rei_plugin_compatibilities";
+    public static final String CYCLIC = "cyclic";
 }

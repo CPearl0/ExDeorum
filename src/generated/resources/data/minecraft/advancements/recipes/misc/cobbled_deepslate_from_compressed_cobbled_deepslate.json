@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "minecraft:dirt"
+              "exdeorum:compressed_cobbled_deepslate"
             ]
           }
         ]
@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "exdeorum:compressed_dirt"
+        "recipe": "minecraft:cobbled_deepslate_from_compressed_cobbled_deepslate"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,8 +28,8 @@
   ],
   "rewards": {
     "recipes": [
-      "exdeorum:compressed_dirt"
+      "minecraft:cobbled_deepslate_from_compressed_cobbled_deepslate"
     ]
   },
-  "sends_telemetry_event": true
+  "sends_telemetry_event": false
 }

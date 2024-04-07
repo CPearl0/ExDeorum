@@ -24,6 +24,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import thedarkcolour.exdeorum.ExDeorum;
+import thedarkcolour.exdeorum.loot.CompressedHammerLootModifier;
 import thedarkcolour.exdeorum.loot.CrookLootModifier;
 import thedarkcolour.exdeorum.loot.HammerLootModifier;
 
@@ -32,4 +33,5 @@ public class EGlobalLootModifiers {
 
     public static final RegistryObject<Codec<CrookLootModifier>> CROOK = GLOBAL_LOOT_MODIFIERS.register("crook", () -> CrookLootModifier.CODEC);
     public static final RegistryObject<Codec<HammerLootModifier>> HAMMER = GLOBAL_LOOT_MODIFIERS.register("hammer", () -> HammerLootModifier.CODEC);
+    public static final RegistryObject<Codec<CompressedHammerLootModifier>> COMPRESSED_HAMMER = GLOBAL_LOOT_MODIFIERS.register("compressed_hammer", () -> CompressedHammerLootModifier.CODEC);
 }
