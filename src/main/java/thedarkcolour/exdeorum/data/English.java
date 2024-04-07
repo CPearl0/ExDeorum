@@ -19,8 +19,10 @@
 package thedarkcolour.exdeorum.data;
 
 import net.minecraft.tags.TagKey;
+import org.apache.commons.lang3.text.WordUtils;
 import thedarkcolour.exdeorum.client.screen.RedstoneControlWidget;
 import thedarkcolour.exdeorum.material.DefaultMaterials;
+import thedarkcolour.exdeorum.registry.ECompressedBlocks;
 import thedarkcolour.exdeorum.registry.EFluids;
 import thedarkcolour.exdeorum.tag.EItemTags;
 import thedarkcolour.modkit.data.MKEnglishProvider;
@@ -31,12 +33,20 @@ class English {
 
         english.add(EItemTags.CROOKS, "Crooks");
         english.add(EItemTags.HAMMERS, "Hammers");
+        english.add(EItemTags.COMPRESSED_HAMMERS, "Compressed Hammers");
         english.add(EItemTags.SIEVE_MESHES, "Sieve Meshes");
         english.add(EItemTags.PEBBLES, "Pebbles");
         english.add(EItemTags.END_CAKE_MATERIAL, "End Cake Materials");
         english.add(EItemTags.WOODEN_BARRELS, "Wooden Barrels");
         english.add(EItemTags.STONE_BARRELS, "Stone Barrels");
         english.add(EItemTags.BARRELS, "Barrels");
+
+        for (var variant : ECompressedBlocks.ALL_VARIANTS) {
+            // todo add a "capitalize ID" method to ModKit so I don't have to keep track of this code
+            //noinspection deprecation
+            english.add(variant.getTag(), WordUtils.capitalize(variant.getId().getPath().replace('_', ' ')));
+        }
+        english.add(EItemTags.COMPRESSED_SANDS, "Compressed Sands");
 
         english.add(EFluids.WITCH_WATER_TYPE.get(), "Witch Water");
 

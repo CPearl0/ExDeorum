@@ -32,6 +32,7 @@ import thedarkcolour.exdeorum.registry.EBlocks;
 import thedarkcolour.exdeorum.registry.EItems;
 import thedarkcolour.exdeorum.tag.EItemTags;
 
+import java.net.URI;
 import java.util.function.Supplier;
 
 public class CompressedBlockType implements ItemLike {
@@ -98,5 +99,9 @@ public class CompressedBlockType implements ItemLike {
 
     public Block getBase() {
         return this.base.get();
+    }
+
+    public ResourceLocation getId() {
+        return this.block.getId();
     }
 }
