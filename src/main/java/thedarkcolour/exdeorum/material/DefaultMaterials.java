@@ -239,6 +239,7 @@ public class DefaultMaterials {
     public static void registerMaterials() {
         BARRELS.search(BarrelMaterial::readFromJson);
         SIEVES.search(SieveMaterial::readFromJson);
+        // todo compressed sieve JSON
         LAVA_CRUCIBLES.search(parser -> AbstractCrucibleMaterial.readFromJson(parser, LavaCrucibleMaterial::new));
         WATER_CRUCIBLES.search(parser -> AbstractCrucibleMaterial.readFromJson(parser, WaterCrucibleMaterial::new));
     }
