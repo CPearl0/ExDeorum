@@ -19,8 +19,12 @@
 package thedarkcolour.exdeorum.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +42,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.Nullable;
 import thedarkcolour.exdeorum.blockentity.InfestedLeavesBlockEntity;
 import thedarkcolour.exdeorum.client.RenderUtil;
@@ -75,7 +82,6 @@ public class InfestedLeavesBlock extends LeavesBlock implements EntityBlock {
         }
     }
 
-    @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new InfestedLeavesBlockEntity(pos, state);
@@ -100,13 +106,13 @@ public class InfestedLeavesBlock extends LeavesBlock implements EntityBlock {
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (decaying(state)) {
             // doesn't drop unless crook
-            //dropResources(state, level, pos);
             level.removeBlock(pos, false);
         }
     }
 
     @Override
     public RenderShape getRenderShape(BlockState pState) {
+        if (FMLEnvironment.dist == Dist.DEDICATED_SERVER) return RenderShape.MODEL;
         return (EConfig.CLIENT_SPEC.isLoaded() && EConfig.CLIENT.useFastInfestedLeaves.get()) || RenderUtil.IRIS_ACCESS.areShadersEnabled() ? RenderShape.MODEL : RenderShape.INVISIBLE;
     }
 }
