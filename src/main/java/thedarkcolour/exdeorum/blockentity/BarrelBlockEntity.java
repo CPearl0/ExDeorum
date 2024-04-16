@@ -274,7 +274,9 @@ public class BarrelBlockEntity extends EBlockEntity {
                     if (recipe != null && this.tank.getFluidAmount() >= recipe.baseFluidAmount && itemFluid.getAmount() == 1000) {
                         if (!level.isClientSide) {
                             this.tank.drain(recipe.baseFluidAmount, IFluidHandler.FluidAction.EXECUTE);
-                            setItem(new ItemStack(recipe.result));
+                            ItemStack result = new ItemStack(recipe.result);
+                            result.setTag(recipe.getResultNbt());
+                            setItem(result);
 
                             if (recipe.consumesAdditive) {
                                 itemFluidCap.drain(1000, IFluidHandler.FluidAction.EXECUTE);
@@ -378,7 +380,9 @@ public class BarrelBlockEntity extends EBlockEntity {
                 // Empty barrel
                 this.tank.drain(recipe.fluidAmount, IFluidHandler.FluidAction.EXECUTE);
                 // Replace fluid with result
-                setItem(new ItemStack(recipe.result));
+                ItemStack result = new ItemStack(recipe.result);
+                result.setTag(recipe.getResultNbt());
+                setItem(result);
                 this.level.playSound(null, this.worldPosition, SoundEvents.AMBIENT_UNDERWATER_EXIT, SoundSource.BLOCKS, 0.8f, 0.8f);
             }
             // Mixing was successful, so return true

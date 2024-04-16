@@ -92,7 +92,9 @@ public record GroupedSieveRecipe(Ingredient ingredient, ItemStack mesh, List<Res
 
                 for (var recipe : meshRecipes) {
                     int resultCount = recipe.resultAmount instanceof ConstantValue constant ? Math.round(constant.value) : 1;
-                    results.add(new Result(new ItemStack(recipe.result, resultCount), recipe.resultAmount, recipe.byHandOnly));
+                    ItemStack result = new ItemStack(recipe.result, resultCount);
+                    result.setTag(recipe.getResultNbt());
+                    results.add(new Result(result, recipe.resultAmount, recipe.byHandOnly));
                 }
 
                 results.sort(resultSorter);

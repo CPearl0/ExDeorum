@@ -62,7 +62,9 @@ public class HammerLootModifier extends LootModifier {
                     }
 
                     if (resultAmount > 0) {
-                        newLoot.add(new ItemStack(recipe.result, resultAmount));
+                        ItemStack result = new ItemStack(recipe.result, resultAmount);
+                        result.setTag(recipe.getResultNbt());
+                        newLoot.add(result);
                     }
                     return newLoot;
                 }

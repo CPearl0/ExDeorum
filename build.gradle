@@ -162,6 +162,10 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
 }
 
+test {
+    useJUnitPlatform()
+}
+
 def replaceProperties = [ mc_version: mc_version, mod_version: version ]
 
 processResources {

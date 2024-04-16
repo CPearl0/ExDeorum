@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -46,8 +47,8 @@ public class SieveRecipe extends ProbabilityRecipe {
     public final Item mesh;
     public final boolean byHandOnly;
 
-    public SieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, boolean byHandOnly) {
-        super(id, ingredient, result, resultAmount);
+    public SieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, @Nullable CompoundTag resultNbt, boolean byHandOnly) {
+        super(id, ingredient, result, resultAmount, resultNbt);
 
         this.mesh = mesh;
         this.byHandOnly = byHandOnly;
@@ -63,8 +64,17 @@ public class SieveRecipe extends ProbabilityRecipe {
         return ERecipeTypes.SIEVE.get();
     }
 
+    public static boolean areEqual(SieveRecipe a, SieveRecipe b) {
+        if (a.getClass() != b.getClass()) return false;
+        return a.byHandOnly == b.byHandOnly
+                && Objects.equals(a.mesh, b.mesh)
+                && RecipeUtil.areIngredientsEqual(a.ingredient, b.ingredient)
+                && Objects.equals(a.result, b.result)
+                && Objects.equals(a.resultNbt, b.resultNbt);
+    }
+
     public static abstract class AbstractSerializer<T extends SieveRecipe> implements RecipeSerializer<T> {
-        protected abstract T createSieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, boolean byHandOnly);
+        protected abstract T createSieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, @Nullable CompoundTag resultNbt, boolean byHandOnly);
 
         @Override
         public T fromJson(ResourceLocation id, JsonObject json) {
@@ -87,18 +97,21 @@ public class SieveRecipe extends ProbabilityRecipe {
             }
 
             NumberProvider resultAmount = RecipeUtil.readNumberProvider(json, "result_amount");
+            CompoundTag resultNbt = RecipeUtil.readNbtTag(json, "result_nbt");
             boolean byHandOnly = json.has("by_hand_only") && json.get("by_hand_only").getAsBoolean();
-            return createSieveRecipe(id, ingredient, mesh, result, resultAmount, byHandOnly);
+            return createSieveRecipe(id, ingredient, mesh, result, resultAmount, resultNbt, byHandOnly);
         }
 
         @SuppressWarnings("deprecation")
         @Override
-        public @Nullable T fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
+        public T fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
             Ingredient ingredient = Ingredient.fromNetwork(buffer);
             Item mesh = Objects.requireNonNull(buffer.readById(BuiltInRegistries.ITEM));
             Item result = Objects.requireNonNull(buffer.readById(BuiltInRegistries.ITEM));
             NumberProvider resultAmount = RecipeUtil.fromNetworkNumberProvider(buffer);
-            return createSieveRecipe(id, ingredient, mesh, result, resultAmount, buffer.readBoolean());
+            CompoundTag resultNbt = buffer.readNbt();
+            boolean byHandOnly = buffer.readBoolean();
+            return createSieveRecipe(id, ingredient, mesh, result, resultAmount, resultNbt, byHandOnly);
         }
 
         @SuppressWarnings("deprecation")
@@ -108,14 +121,15 @@ public class SieveRecipe extends ProbabilityRecipe {
             buffer.writeId(BuiltInRegistries.ITEM, recipe.mesh);
             buffer.writeId(BuiltInRegistries.ITEM, recipe.result);
             RecipeUtil.toNetworkNumberProvider(buffer, recipe.resultAmount);
+            buffer.writeNbt(recipe.resultNbt);
             buffer.writeBoolean(recipe.byHandOnly);
         }
     }
 
     public static class Serializer extends AbstractSerializer<SieveRecipe> {
         @Override
-        protected SieveRecipe createSieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, boolean byHandOnly) {
-            return new SieveRecipe(id, ingredient, mesh, result, resultAmount, byHandOnly);
+        protected SieveRecipe createSieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, @Nullable CompoundTag resultNbt, boolean byHandOnly) {
+            return new SieveRecipe(id, ingredient, mesh, result, resultAmount, resultNbt, byHandOnly);
         }
     }
 }

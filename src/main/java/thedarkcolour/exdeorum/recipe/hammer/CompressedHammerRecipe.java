@@ -18,18 +18,21 @@
 
 package thedarkcolour.exdeorum.recipe.hammer;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import org.jetbrains.annotations.Nullable;
 import thedarkcolour.exdeorum.registry.ERecipeSerializers;
 import thedarkcolour.exdeorum.registry.ERecipeTypes;
 
 public class CompressedHammerRecipe extends HammerRecipe {
-    public CompressedHammerRecipe(ResourceLocation id, Ingredient ingredient, Item result, NumberProvider resultAmount) {
-        super(id, ingredient, result, resultAmount);
+
+    public CompressedHammerRecipe(ResourceLocation id, Ingredient ingredient, Item result, NumberProvider resultAmount, @Nullable CompoundTag resultNbt) {
+        super(id, ingredient, result, resultAmount, resultNbt);
     }
 
     @Override
@@ -44,8 +47,8 @@ public class CompressedHammerRecipe extends HammerRecipe {
 
     public static class Serializer extends HammerRecipe.AbstractSerializer<CompressedHammerRecipe> {
         @Override
-        protected CompressedHammerRecipe createHammerRecipe(ResourceLocation id, Ingredient ingredient, Item result, NumberProvider resultAmount) {
-            return new CompressedHammerRecipe(id, ingredient, result, resultAmount);
+        protected CompressedHammerRecipe createHammerRecipe(ResourceLocation id, Ingredient ingredient, Item result, NumberProvider resultAmount, @Nullable CompoundTag resultNbt) {
+            return new CompressedHammerRecipe(id, ingredient, result, resultAmount, resultNbt);
         }
     }
 }

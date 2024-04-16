@@ -21,22 +21,30 @@ package thedarkcolour.exdeorum.recipe.crook;
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 import thedarkcolour.exdeorum.recipe.BlockPredicate;
 import thedarkcolour.exdeorum.recipe.RecipeUtil;
 import thedarkcolour.exdeorum.registry.ERecipeSerializers;
 import thedarkcolour.exdeorum.registry.ERecipeTypes;
 
-public record CrookRecipe(ResourceLocation id, BlockPredicate blockPredicate, Item result, float chance) implements Recipe<Container> {
+import java.util.Objects;
+
+public record CrookRecipe(ResourceLocation id, BlockPredicate blockPredicate, Item result, @Nullable CompoundTag resultNbt, float chance) implements Recipe<Container> {
+    @Nullable
+    public CompoundTag getResultNbt() {
+        return this.resultNbt == null ? null : this.resultNbt.copy();
+    }
+
     @Override
     public boolean matches(Container pContainer, Level pLevel) {
         return false;
@@ -54,7 +62,9 @@ public record CrookRecipe(ResourceLocation id, BlockPredicate blockPredicate, It
 
     @Override
     public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-        return new ItemStack(this.result);
+        ItemStack result = new ItemStack(this.result, 1);
+        result.setTag(getResultNbt());
+        return result;
     }
 
     @Override
@@ -72,38 +82,37 @@ public record CrookRecipe(ResourceLocation id, BlockPredicate blockPredicate, It
         return ERecipeTypes.CROOK.get();
     }
 
-    @SuppressWarnings("deprecation")
     public static class Serializer implements RecipeSerializer<CrookRecipe> {
         @Override
         public CrookRecipe fromJson(ResourceLocation id, JsonObject json) {
-            BlockPredicate blockPredicate = RecipeUtil.readBlockPredicate(id, json, "block_predicate");
-            if (blockPredicate == null) return null;
+            BlockPredicate blockPredicate = Objects.requireNonNull(RecipeUtil.readBlockPredicate(id, json, "block_predicate"));
 
             Item result = RecipeUtil.readItem(json, "result");
+            CompoundTag resultNbt = RecipeUtil.readNbtTag(json, "result_nbt");
             float chance = json.get("chance").getAsFloat();
 
-
-            return new CrookRecipe(id, blockPredicate, result, chance);
+            return new CrookRecipe(id, blockPredicate, result, resultNbt, chance);
         }
 
         @Override
+        @SuppressWarnings("deprecation")
         public CrookRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buffer) {
             BlockPredicate blockPredicate = RecipeUtil.readBlockPredicateNetwork(id, buffer);
             if (blockPredicate == null) return null;
 
-            Item result = buffer.readById(BuiltInRegistries.ITEM);
-            if (result == null || result == Items.AIR) {
-                return null;
-            }
+            Item result = Objects.requireNonNull(buffer.readById(BuiltInRegistries.ITEM));
+            CompoundTag resultNbt = buffer.readNbt();
             float chance = buffer.readFloat();
 
-            return new CrookRecipe(id, blockPredicate, result, chance);
+            return new CrookRecipe(id, blockPredicate, result, resultNbt, chance);
         }
 
         @Override
+        @SuppressWarnings("deprecation")
         public void toNetwork(FriendlyByteBuf buffer, CrookRecipe recipe) {
             recipe.blockPredicate.toNetwork(buffer);
             buffer.writeId(BuiltInRegistries.ITEM, recipe.result);
+            buffer.writeNbt(recipe.resultNbt);
             buffer.writeFloat(recipe.chance);
         }
     }

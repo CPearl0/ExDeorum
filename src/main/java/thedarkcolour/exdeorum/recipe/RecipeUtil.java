@@ -28,6 +28,7 @@ import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -500,5 +501,10 @@ public final class RecipeUtil {
 
     public static String writeItemJson(Item result) {
         return BuiltInRegistries.ITEM.getKey(result).toString();
+    }
+
+    @Nullable
+    public static CompoundTag readNbtTag(JsonObject json, String key) {
+        return json.has(key) ? CraftingHelper.getNBT(json.get(key)) : null;
     }
 }

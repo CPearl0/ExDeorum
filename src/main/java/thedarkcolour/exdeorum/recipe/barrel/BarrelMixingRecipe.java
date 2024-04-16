@@ -20,6 +20,7 @@ package thedarkcolour.exdeorum.recipe.barrel;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -43,12 +44,20 @@ public class BarrelMixingRecipe extends SingleIngredientRecipe {
     public final Fluid fluid;
     public final int fluidAmount;
     public final Item result;
+    @Nullable
+    protected final CompoundTag resultNbt;
 
-    public BarrelMixingRecipe(ResourceLocation id, Ingredient ingredient, Fluid fluid, int fluidAmount, Item result) {
+    public BarrelMixingRecipe(ResourceLocation id, Ingredient ingredient, Fluid fluid, int fluidAmount, Item result, @Nullable CompoundTag resultNbt) {
         super(id, ingredient);
         this.fluid = fluid;
         this.fluidAmount = fluidAmount;
         this.result = result;
+        this.resultNbt = resultNbt;
+    }
+
+    @Nullable
+    public CompoundTag getResultNbt() {
+        return this.resultNbt == null ? null : this.resultNbt.copy();
     }
 
     // Do not use
@@ -84,8 +93,9 @@ public class BarrelMixingRecipe extends SingleIngredientRecipe {
             Fluid fluid = RecipeUtil.readFluid(json, "fluid");
             int fluidAmount = GsonHelper.getAsInt(json, "fluid_amount");
             Item result = RecipeUtil.readItem(json, "result");
+            CompoundTag resultNbt = RecipeUtil.readNbtTag(json, "result_nbt");
 
-            return new BarrelMixingRecipe(id, ingredient, fluid, fluidAmount, result);
+            return new BarrelMixingRecipe(id, ingredient, fluid, fluidAmount, result, resultNbt);
         }
 
         @Override
@@ -94,6 +104,7 @@ public class BarrelMixingRecipe extends SingleIngredientRecipe {
             buffer.writeRegistryId(ForgeRegistries.FLUIDS, recipe.fluid);
             buffer.writeVarInt(recipe.fluidAmount);
             buffer.writeRegistryId(ForgeRegistries.ITEMS, recipe.result);
+            buffer.writeNbt(recipe.resultNbt);
         }
 
         @Override
@@ -102,8 +113,9 @@ public class BarrelMixingRecipe extends SingleIngredientRecipe {
             Fluid fluid = buffer.readRegistryId();
             int fluidAmount = buffer.readVarInt();
             Item result = buffer.readRegistryId();
+            CompoundTag resultNbt = buffer.readNbt();
 
-            return new BarrelMixingRecipe(id, ingredient, fluid, fluidAmount, result);
+            return new BarrelMixingRecipe(id, ingredient, fluid, fluidAmount, result, resultNbt);
         }
     }
 }

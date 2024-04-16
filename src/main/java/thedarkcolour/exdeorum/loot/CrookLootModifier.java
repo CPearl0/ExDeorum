@@ -33,7 +33,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
-import org.jetbrains.annotations.NotNull;
 import thedarkcolour.exdeorum.recipe.RecipeUtil;
 import thedarkcolour.exdeorum.recipe.crook.CrookRecipe;
 
@@ -47,7 +46,7 @@ public class CrookLootModifier extends LootModifier {
     }
 
     @Override
-    protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+    protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
         var state = context.getParamOrNull(LootContextParams.BLOCK_STATE);
         var stack = context.getParamOrNull(LootContextParams.TOOL);
 
@@ -61,7 +60,9 @@ public class CrookLootModifier extends LootModifier {
                 for (CrookRecipe recipe : RecipeUtil.getCrookRecipes(state)) {
                     for (int i = 0; i < rolls; i++) {
                         if (rand.nextFloat() < recipe.chance()) {
-                            generatedLoot.add(new ItemStack(recipe.result()));
+                            ItemStack result = new ItemStack(recipe.result(), 1);
+                            result.setTag(recipe.getResultNbt());
+                            generatedLoot.add(result);
                         }
                     }
                 }

@@ -26,9 +26,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import thedarkcolour.exdeorum.data.TranslationKeys;
 import thedarkcolour.exdeorum.recipe.hammer.HammerRecipe;
-import thedarkcolour.exdeorum.registry.EItems;
 
 import java.util.function.Supplier;
 
@@ -53,11 +51,14 @@ class HammerCategory extends OneToOneCategory<HammerRecipe> {
 
     @Override
     protected void addOutput(IRecipeSlotBuilder slot, HammerRecipe recipe) {
+        ItemStack result;
         if (recipe.resultAmount instanceof ConstantValue constant) {
-            slot.addItemStack(new ItemStack(recipe.result, (int) constant.value));
+            result = new ItemStack(recipe.result, (int) constant.value);
         } else {
-            slot.addItemStack(new ItemStack(recipe.result));
-            SieveCategory.addTooltips(slot, false, recipe.resultAmount);
+            result = new ItemStack(recipe.result, 1);
         }
+        SieveCategory.addTooltips(slot, false, recipe.resultAmount);
+        result.setTag(recipe.getResultNbt());
+        slot.addItemStack(result);
     }
 }

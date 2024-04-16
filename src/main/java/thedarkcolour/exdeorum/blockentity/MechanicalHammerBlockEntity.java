@@ -43,6 +43,8 @@ import thedarkcolour.exdeorum.recipe.hammer.HammerRecipe;
 import thedarkcolour.exdeorum.registry.EBlockEntities;
 import thedarkcolour.exdeorum.tag.EItemTags;
 
+import java.util.Objects;
+
 public class MechanicalHammerBlockEntity extends AbstractMachineBlockEntity<MechanicalHammerBlockEntity> {
     private static final Component TITLE = Component.translatable(TranslationKeys.MECHANICAL_HAMMER_SCREEN_TITLE);
     private static final int INPUT_SLOT = 0;
@@ -127,7 +129,7 @@ public class MechanicalHammerBlockEntity extends AbstractMachineBlockEntity<Mech
         if (output.isEmpty() || output.getCount() < output.getMaxStackSize()) {
             var recipe = RecipeUtil.getHammerRecipe(input.getItem());
 
-            if (recipe != null && (output.isEmpty() || matchesStack(recipe.result, output))) {
+            if (recipe != null && (output.isEmpty() || matchesStack(recipe.result, recipe.getRawResultNbt(), output))) {
                 return recipe;
             }
         }
@@ -135,8 +137,8 @@ public class MechanicalHammerBlockEntity extends AbstractMachineBlockEntity<Mech
         return null;
     }
 
-    private static boolean matchesStack(Item item, ItemStack stack) {
-        return !stack.hasTag() && item == stack.getItem();
+    private static boolean matchesStack(Item item, @Nullable CompoundTag itemNbt, ItemStack stack) {
+        return Objects.equals(itemNbt, stack.getTag()) && item == stack.getItem();
     }
 
     @Override
@@ -156,7 +158,9 @@ public class MechanicalHammerBlockEntity extends AbstractMachineBlockEntity<Mech
                     resultCount += HammerLootModifier.calculateFortuneBonus(this.inventory.getStackInSlot(HAMMER_SLOT), ctx.getRandom(), resultCount == 0);
                     var output = this.inventory.getStackInSlot(OUTPUT_SLOT);
                     if (output.isEmpty()) {
-                        this.inventory.setStackInSlot(OUTPUT_SLOT, new ItemStack(recipe.result, resultCount));
+                        ItemStack stack = new ItemStack(recipe.result, resultCount);
+                        stack.setTag(recipe.getResultNbt());
+                        this.inventory.setStackInSlot(OUTPUT_SLOT, stack);
                     } else {
                         output.setCount(Math.min(output.getMaxStackSize(), resultCount + output.getCount()));
                     }

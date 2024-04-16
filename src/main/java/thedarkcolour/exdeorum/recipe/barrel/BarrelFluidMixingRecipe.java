@@ -20,6 +20,7 @@ package thedarkcolour.exdeorum.recipe.barrel;
 
 import com.google.gson.JsonObject;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -48,14 +49,17 @@ public class BarrelFluidMixingRecipe implements Recipe<Container> {
     public final int baseFluidAmount;
     public final Fluid additiveFluid;
     public final Item result;
+    @Nullable
+    protected final CompoundTag resultNbt;
     public final boolean consumesAdditive;
 
-    public BarrelFluidMixingRecipe(ResourceLocation id, Fluid baseFluid, int baseFluidAmount, Fluid additiveFluid, Item result, boolean consumesAdditive) {
+    public BarrelFluidMixingRecipe(ResourceLocation id, Fluid baseFluid, int baseFluidAmount, Fluid additiveFluid, Item result, @Nullable CompoundTag resultNbt, boolean consumesAdditive) {
         this.id = id;
         this.baseFluid = baseFluid;
         this.baseFluidAmount = baseFluidAmount;
         this.additiveFluid = additiveFluid;
         this.result = result;
+        this.resultNbt = resultNbt;
         this.consumesAdditive = consumesAdditive;
     }
 
@@ -94,6 +98,11 @@ public class BarrelFluidMixingRecipe implements Recipe<Container> {
         return ERecipeTypes.BARREL_FLUID_MIXING.get();
     }
 
+    @Nullable
+    public CompoundTag getResultNbt() {
+        return this.resultNbt == null ? null : this.resultNbt.copy();
+    }
+
     public static class Serializer implements RecipeSerializer<BarrelFluidMixingRecipe> {
         @Override
         public BarrelFluidMixingRecipe fromJson(ResourceLocation id, JsonObject json) {
@@ -101,9 +110,10 @@ public class BarrelFluidMixingRecipe implements Recipe<Container> {
             int baseFluidAmount = GsonHelper.getAsInt(json, "base_fluid_amount");
             Fluid additiveFluid = RecipeUtil.readFluid(json, "additive_fluid");
             Item result = RecipeUtil.readItem(json, "result");
+            CompoundTag resultNbt = RecipeUtil.readNbtTag(json, "result_nbt");
             boolean consumesAdditive = GsonHelper.getAsBoolean(json, "consumes_additive");
 
-            return new BarrelFluidMixingRecipe(id, baseFluid, baseFluidAmount, additiveFluid, result, consumesAdditive);
+            return new BarrelFluidMixingRecipe(id, baseFluid, baseFluidAmount, additiveFluid, result, resultNbt, consumesAdditive);
         }
 
         @Override
@@ -112,6 +122,7 @@ public class BarrelFluidMixingRecipe implements Recipe<Container> {
             buffer.writeVarInt(recipe.baseFluidAmount);
             buffer.writeRegistryId(ForgeRegistries.FLUIDS, recipe.additiveFluid);
             buffer.writeRegistryId(ForgeRegistries.ITEMS, recipe.result);
+            buffer.writeNbt(recipe.resultNbt);
             buffer.writeBoolean(recipe.consumesAdditive);
         }
 
@@ -121,9 +132,10 @@ public class BarrelFluidMixingRecipe implements Recipe<Container> {
             int baseFluidAmount = buffer.readVarInt();
             Fluid additiveFluid = buffer.readRegistryId();
             Item result = buffer.readRegistryId();
+            CompoundTag resultNbt = buffer.readNbt();
             boolean consumesAdditive = buffer.readBoolean();
 
-            return new BarrelFluidMixingRecipe(id, baseFluid, baseFluidAmount, additiveFluid, result, consumesAdditive);
+            return new BarrelFluidMixingRecipe(id, baseFluid, baseFluidAmount, additiveFluid, result, resultNbt, consumesAdditive);
         }
     }
 }

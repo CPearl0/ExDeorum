@@ -18,18 +18,20 @@
 
 package thedarkcolour.exdeorum.recipe.sieve;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
+import org.jetbrains.annotations.Nullable;
 import thedarkcolour.exdeorum.registry.ERecipeSerializers;
 import thedarkcolour.exdeorum.registry.ERecipeTypes;
 
 public class CompressedSieveRecipe extends SieveRecipe {
-    public CompressedSieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, boolean byHandOnly) {
-        super(id, ingredient, mesh, result, resultAmount, byHandOnly);
+    public CompressedSieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, @Nullable CompoundTag resultNbt, boolean byHandOnly) {
+        super(id, ingredient, mesh, result, resultAmount, resultNbt, byHandOnly);
     }
 
     @Override
@@ -44,8 +46,8 @@ public class CompressedSieveRecipe extends SieveRecipe {
 
     public static class Serializer extends SieveRecipe.AbstractSerializer<CompressedSieveRecipe> {
         @Override
-        protected CompressedSieveRecipe createSieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, boolean byHandOnly) {
-            return new CompressedSieveRecipe(id, ingredient, mesh, result, resultAmount, byHandOnly);
+        protected CompressedSieveRecipe createSieveRecipe(ResourceLocation id, Ingredient ingredient, Item mesh, Item result, NumberProvider resultAmount, @Nullable CompoundTag resultNbt, boolean byHandOnly) {
+            return new CompressedSieveRecipe(id, ingredient, mesh, result, resultAmount, resultNbt, byHandOnly);
         }
     }
 }

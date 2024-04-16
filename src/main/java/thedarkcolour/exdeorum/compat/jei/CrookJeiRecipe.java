@@ -24,6 +24,7 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -43,11 +44,14 @@ import java.util.List;
 public sealed abstract class CrookJeiRecipe {
     public final List<BlockState> states;
     public Item result;
+    @Nullable
+    private final CompoundTag resultNbt;
     public float chance;
 
-    public CrookJeiRecipe(List<BlockState> states, Item result, float chance) {
+    public CrookJeiRecipe(List<BlockState> states, Item result, @Nullable CompoundTag resultNbt, float chance) {
         this.states = states;
         this.result = result;
+        this.resultNbt = resultNbt;
         this.chance = chance;
     }
 
@@ -55,30 +59,36 @@ public sealed abstract class CrookJeiRecipe {
 
     static CrookJeiRecipe create(CrookRecipe recipe) {
         if (recipe.blockPredicate() instanceof BlockPredicate.BlockStatePredicate state) {
-            return new StatesRecipe(state, state.possibleStates().filter(blockState -> !blockState.hasProperty(BlockStateProperties.WATERLOGGED) || !blockState.getValue(BlockStateProperties.WATERLOGGED)).toList(), recipe.result(), recipe.chance());
+            return new StatesRecipe(state, state.possibleStates().filter(blockState -> !blockState.hasProperty(BlockStateProperties.WATERLOGGED) || !blockState.getValue(BlockStateProperties.WATERLOGGED)).toList(), recipe.result(), recipe.resultNbt(), recipe.chance());
         } else if (recipe.blockPredicate() instanceof BlockPredicate.SingleBlockPredicate block) {
-            return new BlockRecipe(block.block(), recipe.result(), recipe.chance());
+            return new BlockRecipe(block.block(), recipe.result(), recipe.resultNbt(), recipe.chance());
         } else if (recipe.blockPredicate() instanceof BlockPredicate.TagPredicate tag) {
             var list = new ArrayList<BlockState>();
 
+            //noinspection deprecation
             for (var holder : BuiltInRegistries.BLOCK.getTagOrEmpty(tag.tag())) {
                 if (holder.isBound()) {
                     list.add(holder.value().defaultBlockState());
                 }
             }
 
-            return new TagRecipe(tag.tag(), List.copyOf(list), recipe.result(), recipe.chance());
+            return new TagRecipe(tag.tag(), List.copyOf(list), recipe.result(), recipe.resultNbt(), recipe.chance());
         }
 
         throw new IllegalArgumentException("Invalid crook recipe??  ->  " + recipe);
+    }
+
+    @Nullable
+    public CompoundTag getResultNbt() {
+        return this.resultNbt == null ? null : this.resultNbt.copy();
     }
 
     sealed static class StatesRecipe extends CrookJeiRecipe {
         private final List<ItemStack> itemIngredients;
         public final List<Component> requirements;
 
-        StatesRecipe(@Nullable BlockPredicate.BlockStatePredicate predicate, List<BlockState> states, Item result, float chance) {
-            super(states, result, chance);
+        StatesRecipe(@Nullable BlockPredicate.BlockStatePredicate predicate, List<BlockState> states, Item result, @Nullable CompoundTag resultNbt, float chance) {
+            super(states, result, resultNbt, chance);
             ImmutableList.Builder<ItemStack> itemIngredients = ImmutableList.builder();
 
             var blocks = new HashSet<Block>();
@@ -120,8 +130,8 @@ public sealed abstract class CrookJeiRecipe {
     static final class TagRecipe extends StatesRecipe {
         public final TagKey<Block> tag;
 
-        public TagRecipe(TagKey<Block> tag, List<BlockState> states, Item result, float chance) {
-            super(null, states, result, chance);
+        public TagRecipe(TagKey<Block> tag, List<BlockState> states, Item result, @Nullable CompoundTag resultNbt, float chance) {
+            super(null, states, result, resultNbt, chance);
             this.tag = tag;
         }
     }
@@ -129,8 +139,8 @@ public sealed abstract class CrookJeiRecipe {
     static final class BlockRecipe extends CrookJeiRecipe {
         private final ItemStack itemIngredient;
 
-        BlockRecipe(Block block, Item result, float chance) {
-            super(List.of(block.defaultBlockState()), result, chance);
+        BlockRecipe(Block block, Item result, @Nullable CompoundTag resultNbt, float chance) {
+            super(List.of(block.defaultBlockState()), result, resultNbt, chance);
 
             var item = block.asItem();
             if (item == Items.AIR) {

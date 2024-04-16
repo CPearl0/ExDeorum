@@ -99,6 +99,7 @@ public class SieveLogic {
                     hasDrops = true;
                     // make a single item copy of recipe result
                     var result = new ItemStack(recipe.result, 1);
+                    result.setTag(recipe.getResultNbt());
                     // the size of the stack respecting stack limits (ex. ender pearl limits to 16)
                     var stackAmount = Math.min(amount, recipe.result.getMaxStackSize(result));
                     result.setCount(stackAmount);
