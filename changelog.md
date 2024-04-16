@@ -1,3 +1,6 @@
+## Ex Deorum 1.32
+- Fixed an issue with void worlds not generating bastion remnants, nether fortresses, or obsidian pillars in the End
+
 ## Ex Deorum 1.31
 - Fixed a server error that would kick players who sprinted on top of Infested Leaves
 - All recipes now have NBT support for their results (ex. it is now possible to add enchanted books as a sieve drop)
