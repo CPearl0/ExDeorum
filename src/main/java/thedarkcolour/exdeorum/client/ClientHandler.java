@@ -43,6 +43,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import thedarkcolour.exdeorum.ExDeorum;
+import thedarkcolour.exdeorum.asm.ASMHooks;
 import thedarkcolour.exdeorum.client.screen.MechanicalHammerScreen;
 import thedarkcolour.exdeorum.client.screen.MechanicalSieveScreen;
 import thedarkcolour.exdeorum.client.ter.*;
@@ -53,7 +54,6 @@ import thedarkcolour.exdeorum.recipe.RecipeUtil;
 import thedarkcolour.exdeorum.registry.EBlockEntities;
 import thedarkcolour.exdeorum.registry.EFluids;
 import thedarkcolour.exdeorum.registry.EMenus;
-import thedarkcolour.exdeorum.registry.EWorldPresets;
 
 import java.io.IOException;
 
@@ -149,13 +149,11 @@ public class ClientHandler {
         }
     }
 
-    // Sets Ex Deorum world type as default
+    // Sets Ex Deorum world type as default, or use SkyBlock Builder if it is installed
     private static void onScreenOpen(ScreenEvent.Opening event) {
-        if (EConfig.CLIENT.setVoidWorldAsDefault.get() && EConfig.COMMON.setVoidWorldAsDefault.get()) {
-            if (event.getNewScreen() instanceof CreateWorldScreen screen) {
-                var ctx = screen.getUiState().getSettings();
-                screen.getUiState().setWorldType(new WorldCreationUiState.WorldTypeEntry(ctx.worldgenLoadContext().registryOrThrow(Registries.WORLD_PRESET).getHolder(EWorldPresets.VOID_WORLD).orElse(null)));
-            }
+        if (event.getNewScreen() instanceof CreateWorldScreen screen) {
+            var ctx = screen.getUiState().getSettings();
+            screen.getUiState().setWorldType(new WorldCreationUiState.WorldTypeEntry(ctx.worldgenLoadContext().registryOrThrow(Registries.WORLD_PRESET).getHolder(ASMHooks.overrideDefaultWorldPreset()).orElse(null)));
         }
     }
 
