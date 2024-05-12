@@ -1,3 +1,7 @@
+## Ex Deorum 1.34
+- Fix overriding default world type in Create World screen when common config option set_void_world_as_default is false.
+- Removed set_void_world_as_default option from client config, you must now only use the option from the common config.
+
 ## Ex Deorum 1.33
 - Fix typo in JEI integration where both sieve categories were "Compressed Sieve".
 - Add integration for SkyBlock Builder. Now, if that mod is installed, SkyBlock builder's preset is chosen by default instead of Ex Deorum's. This goes for the server.properties file too.
