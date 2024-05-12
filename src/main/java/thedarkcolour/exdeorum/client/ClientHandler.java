@@ -151,7 +151,7 @@ public class ClientHandler {
 
     // Sets Ex Deorum world type as default, or use SkyBlock Builder if it is installed
     private static void onScreenOpen(ScreenEvent.Opening event) {
-        if (event.getNewScreen() instanceof CreateWorldScreen screen) {
+        if (event.getNewScreen() instanceof CreateWorldScreen screen && EConfig.COMMON.setVoidWorldAsDefault.get()) {
             var ctx = screen.getUiState().getSettings();
             screen.getUiState().setWorldType(new WorldCreationUiState.WorldTypeEntry(ctx.worldgenLoadContext().registryOrThrow(Registries.WORLD_PRESET).getHolder(ASMHooks.overrideDefaultWorldPreset()).orElse(null)));
         }
