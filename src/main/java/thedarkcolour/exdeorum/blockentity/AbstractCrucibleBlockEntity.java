@@ -70,7 +70,8 @@ public abstract class AbstractCrucibleBlockEntity extends EBlockEntity {
         return map;
     });
 
-    public static final int MAX_SOLIDS = 1_000;
+    private static final int MAX_SOLIDS = 1000;
+    private static final int MAX_FLUID_CAPACITY = 4000;
 
     private final AbstractCrucibleBlockEntity.ItemHandler item = new AbstractCrucibleBlockEntity.ItemHandler();
     private final AbstractCrucibleBlockEntity.FluidHandler tank = new AbstractCrucibleBlockEntity.FluidHandler();
@@ -298,7 +299,7 @@ public abstract class AbstractCrucibleBlockEntity extends EBlockEntity {
 
     private static class FluidHandler extends FluidHelper {
         public FluidHandler() {
-            super(4_000);
+            super(MAX_FLUID_CAPACITY);
         }
 
         @Override
@@ -339,32 +340,34 @@ public abstract class AbstractCrucibleBlockEntity extends EBlockEntity {
             }
             // Update twice per tick
             if (!level.isClientSide) {
+                var tank = crucible.tank;
+
                 if ((level.getGameTime() % 10L) == 0L) {
                     short delta = (short) Math.min(crucible.solids, crucible.getMeltingRate());
 
                     // Skip if no heat
                     if (delta <= 0) return;
 
-                    if (crucible.tank.getSpace() >= delta) {
+                    if (tank.getSpace() >= delta) {
                         // Remove solids
                         crucible.solids -= delta;
 
                         // Add lava
-                        if (crucible.tank.isEmpty()) {
+                        if (tank.isEmpty()) {
                             if (crucible.fluid != null) {
-                                crucible.tank.setFluid(new FluidStack(crucible.fluid, delta));
+                                tank.setFluid(new FluidStack(crucible.fluid, delta));
                                 crucible.needsLightUpdate = true;
                             }
                         } else {
-                            crucible.tank.getFluid().grow(delta);
+                            tank.getFluid().grow(delta);
                         }
 
                         // Sync to client
                         crucible.markUpdated();
                     }
                 }
-                if (crucible instanceof WaterCrucibleBlockEntity && level.isRainingAt(pos.above())) {
-                    BarrelBlockEntity.fillRainWater(crucible, crucible.tank);
+                if (tank.getFluidAmount() < MAX_FLUID_CAPACITY && crucible instanceof WaterCrucibleBlockEntity && level.isRainingAt(pos.above())) {
+                    BarrelBlockEntity.fillRainWater(crucible, tank);
                 }
             }
         }

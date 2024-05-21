@@ -65,10 +65,10 @@ import thedarkcolour.exdeorum.recipe.RecipeUtil;
 import thedarkcolour.exdeorum.recipe.barrel.BarrelFluidMixingRecipe;
 import thedarkcolour.exdeorum.recipe.barrel.FluidTransformationRecipe;
 import thedarkcolour.exdeorum.registry.EBlockEntities;
-import thedarkcolour.exdeorum.registry.EFluids;
 
 public class BarrelBlockEntity extends EBlockEntity {
     private static final int MOSS_SPREAD_RANGE = 2;
+    private static final int MAX_CAPACITY = 1000;
 
     private final BarrelBlockEntity.ItemHandler item = new BarrelBlockEntity.ItemHandler();
     private final BarrelBlockEntity.FluidHandler tank = new BarrelBlockEntity.FluidHandler();
@@ -160,16 +160,16 @@ public class BarrelBlockEntity extends EBlockEntity {
     }
 
     public boolean isBrewing() {
-        return this.tank.getFluidAmount() == 1000 && this.progress != 0.0f && !isBurning();
+        return this.tank.getFluidAmount() == MAX_CAPACITY && this.progress != 0.0f && !isBurning();
     }
 
     public boolean isBurning() {
         return this.getBlockState().ignitedByLava() && isHotFluid(this.tank.getFluid().getFluid().getFluidType()) && this.progress != 0.0f;
     }
 
-    // Composting is in progress if at 1000. When finished, compost is set back to 0
+    // Composting is in progress if at MAX_CAPACITY. When finished, compost is set back to 0
     public boolean isComposting() {
-        return this.compost == 1000;
+        return this.compost == MAX_CAPACITY;
     }
 
     // Returns true if there are no solid ingredients (can a fluid be inserted?)
@@ -178,7 +178,7 @@ public class BarrelBlockEntity extends EBlockEntity {
     }
 
     public boolean hasFullWater() {
-        return this.tank.getFluidAmount() == 1000 && this.tank.getFluid().getFluid().is(FluidTags.WATER);
+        return this.tank.getFluidAmount() == MAX_CAPACITY && this.tank.getFluid().getFluid().is(FluidTags.WATER);
     }
 
     // Burning temp of wood according to google is 300 C or ~575 kelvin
@@ -408,7 +408,7 @@ public class BarrelBlockEntity extends EBlockEntity {
 
     private void addCompost(ItemStack playerItem, int volume) {
         int oldCompost = this.compost;
-        this.compost = (short) Math.min(1000, this.compost + volume);
+        this.compost = (short) Math.min(MAX_CAPACITY, this.compost + volume);
 
         if (this.compost != 0) {
             if (!CompostColors.isLoaded()) {
@@ -465,10 +465,10 @@ public class BarrelBlockEntity extends EBlockEntity {
 
     public void updateFluidTransform() {
         if (!this.level.isClientSide) {
-            var belowState = this.level.getBlockState(this.worldPosition.below());
-            if (this.tank.getFluidAmount() != 1000) {
+            if (this.tank.getFluidAmount() != MAX_CAPACITY) {
                 this.currentTransformRecipe = null;
             } else {
+                var belowState = this.level.getBlockState(this.worldPosition.below());
                 this.currentTransformRecipe = RecipeUtil.getFluidTransformationRecipe(this.tank.getFluid().getFluid(), belowState);
 
                 if (this.currentTransformRecipe != null) {
@@ -487,21 +487,20 @@ public class BarrelBlockEntity extends EBlockEntity {
         @Override
         public void tick(Level level, BlockPos pos, BlockState state, BarrelBlockEntity barrel) {
             if (!level.isClientSide) {
+                var tank = barrel.tank;
                 // Turn compost to dirt
                 if (barrel.isComposting()) {
                     barrel.doCompost();
-                } else if (isHotFluid(barrel.tank.getFluid().getFluid().getFluidType()) && state.ignitedByLava()) {
+                } else if (isHotFluid(tank.getFluid().getFluid().getFluidType()) && state.ignitedByLava()) {
                     if ((barrel.progress += getProgressStep()) >= 1.0f) {
-                        if (barrel.tank.getFluidAmount() == 1000) {
-                            var fluid = barrel.tank.getFluid().getFluid();
+                        if (tank.getFluidAmount() == MAX_CAPACITY) {
+                            var fluid = tank.getFluid().getFluid();
                             level.setBlockAndUpdate(pos, fluid.getFluidType().getBlockForFluidState(level, pos, fluid.defaultFluidState()));
                         } else {
                             level.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
                         }
                     }
                     barrel.markUpdated();
-                } else if (level.isRainingAt(pos.above()) && barrel.item.getStackInSlot(0).isEmpty() && barrel.compost == 0) {
-                    fillRainWater(barrel, barrel.tank);
                 } else if (barrel.currentTransformRecipe != null) {
                     var recipe = barrel.currentTransformRecipe;
                     var catalysts = 0;
@@ -536,13 +535,20 @@ public class BarrelBlockEntity extends EBlockEntity {
                             // Reset progress
                             barrel.progress = 0.0f;
                             level.playSound(null, pos, SoundEvents.BREWING_STAND_BREW, SoundSource.BLOCKS, 1.0f, 0.6f);
-                            barrel.tank.setFluid(FluidStack.EMPTY);
-                            barrel.tank.fill(new FluidStack(recipe.resultFluid, 1000), IFluidHandler.FluidAction.EXECUTE);
+                            tank.setFluid(FluidStack.EMPTY);
+                            tank.fill(new FluidStack(recipe.resultFluid, 1000), IFluidHandler.FluidAction.EXECUTE);
                         }
                         barrel.markUpdated();
                     }
+                } else if (tank.getFluidAmount() < MAX_CAPACITY && level.isRainingAt(pos.above()) && barrel.item.getStackInSlot(0).isEmpty() && barrel.compost == 0) {
+                    fillRainWater(barrel, tank);
+
+                    // avoid checking fluid transform until full
+                    if (tank.getFluidAmount() == MAX_CAPACITY) {
+                        barrel.updateFluidTransform();
+                    }
                 } else if (barrel.hasFullWater()) {
-                    if (barrel.tank.getFluid().getFluid().getFluidType() == ForgeMod.WATER_TYPE.get()) {
+                    if (tank.getFluid().getFluid().getFluidType() == ForgeMod.WATER_TYPE.get()) {
                         var rand = level.random;
                         // Leak water to create moss (only wooden barrels do this)
                         if (state.ignitedByLava() && rand.nextInt(500) == 0) {
@@ -567,7 +573,7 @@ public class BarrelBlockEntity extends EBlockEntity {
         if (tank.isEmpty()) {
             tank.setFluid(new FluidStack(Fluids.WATER, 1));
             block.markUpdated();
-        } else if (tank.getFluid().getFluid() == Fluids.WATER && tank.getFluidAmount() < tank.getCapacity()) {
+        } else if (tank.getFluid().getFluid() == Fluids.WATER) {
             tank.getFluid().grow(1);
             block.markUpdated();
         }
@@ -651,7 +657,7 @@ public class BarrelBlockEntity extends EBlockEntity {
     // Inner class
     private class FluidHandler extends FluidHelper {
         public FluidHandler() {
-            super(1000);
+            super(MAX_CAPACITY);
         }
 
         @Override
