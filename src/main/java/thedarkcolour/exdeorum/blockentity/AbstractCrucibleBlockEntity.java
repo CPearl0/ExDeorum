@@ -70,8 +70,8 @@ public abstract class AbstractCrucibleBlockEntity extends EBlockEntity {
         return map;
     });
 
-    private static final int MAX_SOLIDS = 1000;
-    private static final int MAX_FLUID_CAPACITY = 4000;
+    public static final int MAX_SOLIDS = 1000;
+    public static final int MAX_FLUID_CAPACITY = 4000;
 
     private final AbstractCrucibleBlockEntity.ItemHandler item = new AbstractCrucibleBlockEntity.ItemHandler();
     private final AbstractCrucibleBlockEntity.FluidHandler tank = new AbstractCrucibleBlockEntity.FluidHandler();

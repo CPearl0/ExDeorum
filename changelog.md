@@ -1,3 +1,8 @@
+## Ex Deorum 1.35
+- Fixed bug where barrels would not trigger a transformation recipe while it is raining (ex. Witch Water conversion)
+- Fixed barrel fluid transformation recipes ignoring the result fluid and only crafting witch water 
+- Added clientside config option to disable rainbow compost in barrels during June
+
 ## Ex Deorum 1.34
 - Fix overriding default world type in Create World screen when common config option set_void_world_as_default is false.
 - Removed set_void_world_as_default option from client config, you must now only use the option from the common config.
