@@ -338,7 +338,7 @@ public abstract class AbstractCrucibleBlockEntity extends EBlockEntity {
                 level.getLightEngine().checkBlock(crucible.worldPosition);
                 crucible.needsLightUpdate = false;
             }
-            // Update twice per tick
+            // Update twice per second
             if (!level.isClientSide) {
                 var tank = crucible.tank;
 
