@@ -23,7 +23,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import thedarkcolour.exdeorum.ExDeorum;
-import thedarkcolour.exdeorum.registry.ECompressedBlocks;
 
 public class EItemTags {
     public static final TagKey<Item> CROOKS = tag("crooks");
@@ -32,6 +31,7 @@ public class EItemTags {
     public static final TagKey<Item> SIEVE_MESHES = tag("sieve_meshes");
     public static final TagKey<Item> PEBBLES = tag("pebbles");
     public static final TagKey<Item> END_CAKE_MATERIAL = tag("end_cake_materials");
+    public static final TagKey<Item> ORE_CHUNKS = tag("ore_chunks");
 
     public static final TagKey<Item> WOODEN_BARRELS = tag("wooden_barrels");
     public static final TagKey<Item> STONE_BARRELS = tag("stone_barrels");
