@@ -51,15 +51,4 @@ public class PorcelainMilkBucket extends MilkBucketItem {
     public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
         return new PorcelainBucket.CapabilityProvider(stack);
     }
-
-    private static class CapabilityProvider extends PorcelainBucket.CapabilityProvider {
-        public CapabilityProvider(@NotNull ItemStack container) {
-            super(container);
-        }
-
-        @Override
-        public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-            return ForgeMod.MILK.isPresent();
-        }
-    }
 }

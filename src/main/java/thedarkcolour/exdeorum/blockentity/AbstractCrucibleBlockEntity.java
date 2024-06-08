@@ -63,7 +63,7 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 
 @SuppressWarnings("deprecation")
-public abstract class AbstractCrucibleBlockEntity extends EBlockEntity {
+public abstract class AbstractCrucibleBlockEntity extends ETankBlockEntity {
     public static final Lazy<HashMap<Item, Block>> MELT_OVERRIDES = Lazy.concurrentOf(() -> {
         var map = new HashMap<Item, Block>();
         addMeltOverrides(map);
@@ -248,6 +248,7 @@ public abstract class AbstractCrucibleBlockEntity extends EBlockEntity {
         return this.solids;
     }
 
+    @Override
     public FluidTank getTank() {
         return this.tank;
     }

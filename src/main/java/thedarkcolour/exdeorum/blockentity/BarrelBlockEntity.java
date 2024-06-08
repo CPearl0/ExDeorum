@@ -67,7 +67,7 @@ import thedarkcolour.exdeorum.recipe.barrel.FluidTransformationRecipe;
 import thedarkcolour.exdeorum.registry.EBlockEntities;
 import thedarkcolour.exdeorum.registry.ESounds;
 
-public class BarrelBlockEntity extends EBlockEntity {
+public class BarrelBlockEntity extends ETankBlockEntity {
     private static final int MOSS_SPREAD_RANGE = 2;
     private static final int MAX_CAPACITY = 1000;
 
@@ -209,6 +209,7 @@ public class BarrelBlockEntity extends EBlockEntity {
         this.item.setStackInSlot(0, item);
     }
 
+    @Override
     public IFluidTank getTank() {
         return this.tank;
     }

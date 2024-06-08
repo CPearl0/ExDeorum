@@ -24,6 +24,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.util.Mth;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import thedarkcolour.exdeorum.block.AbstractCrucibleBlock;
 import thedarkcolour.exdeorum.blockentity.AbstractCrucibleBlockEntity;
 import thedarkcolour.exdeorum.client.RenderUtil;
 
@@ -46,14 +47,14 @@ public class CrucibleRenderer implements BlockEntityRenderer<AbstractCrucibleBlo
                 if (liquid != 0) {
                     var fluid = fluidStack.getFluid();
                     var color = RenderUtil.getFluidColor(fluid, level, pos);
-                    float y = Mth.lerp(liquid, 4.0f, 14.0f) / 16f;
+                    float y = Mth.lerp(liquid, AbstractCrucibleBlock.CRUCIBLE_FLUID_BOTTOM, AbstractCrucibleBlock.CRUCIBLE_FLUID_TOP);
 
                     int r = (color >> 16) & 0xff;
                     int g = (color >> 8) & 0xff;
                     int b = color & 0xff;
 
                     if (crucible.transparent) {
-                        RenderUtil.renderFluidCuboid(buffers, stack, level, pos, 4 / 16f, y, 2.0f, light, r, g, b, fluid);
+                        RenderUtil.renderFluidCuboid(buffers, stack, level, pos, AbstractCrucibleBlock.CRUCIBLE_FLUID_BOTTOM, y, 2.0f, light, r, g, b, fluid);
                     } else {
                         RenderUtil.renderFlatFluidSprite(buffers, stack, level, pos, y, 2.0f, light, r, g, b, fluid);
                     }
@@ -72,7 +73,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<AbstractCrucibleBlo
                     if (color == -1) color = 0xffffff;
 
                     // todo 3D solids for transparent crucibles
-                    face.renderFlatSpriteLerp(buffers, stack, solids, (color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff, light, 2.0f, 4.0f, 14.0f);
+                    face.renderFlatSpriteLerp(buffers, stack, solids, (color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff, light, 2.0f, AbstractCrucibleBlock.CRUCIBLE_FLUID_BOTTOM, AbstractCrucibleBlock.CRUCIBLE_FLUID_TOP);
                 }
             }
         });

@@ -36,6 +36,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import thedarkcolour.exdeorum.ExDeorum;
+import thedarkcolour.exdeorum.block.BarrelBlock;
 import thedarkcolour.exdeorum.blockentity.BarrelBlockEntity;
 import thedarkcolour.exdeorum.client.RenderUtil;
 
@@ -81,7 +82,7 @@ public class BarrelRenderer implements BlockEntityRenderer<BarrelBlockEntity> {
                 var level = barrel.getLevel();
                 var pos = barrel.getBlockPos();
                 var percentage = fluidStack.getAmount() / 1000.0f;
-                var y = Mth.lerp(percentage, 1.0f, 14.0f) / 16f;
+                var y = Mth.lerp(percentage, BarrelBlock.BARREL_FLUID_BOTTOM, BarrelBlock.BARREL_FLUID_TOP);
                 var inputFluidColor = RenderUtil.getFluidColor(fluid, level, pos);
                 // Split into RGB components
                 var r = (inputFluidColor >> 16) & 0xff;
@@ -98,7 +99,7 @@ public class BarrelRenderer implements BlockEntityRenderer<BarrelBlockEntity> {
                 }
 
                 if (barrel.transparent) {
-                    RenderUtil.renderFluidCuboid(buffers, stack, level, pos, 1 / 16f, y, 2.0f, light, r, g, b, fluid);
+                    RenderUtil.renderFluidCuboid(buffers, stack, level, pos, BarrelBlock.BARREL_FLUID_BOTTOM, y, 2.0f, light, r, g, b, fluid);
                 } else {
                     RenderUtil.renderFlatFluidSprite(buffers, stack, level, pos, y, 2.0f, light, r, g, b, fluid);
                 }
@@ -129,7 +130,7 @@ public class BarrelRenderer implements BlockEntityRenderer<BarrelBlockEntity> {
             g = (int) Mth.lerp(compostProgress, g, 169);  // default green is
             b = (int) Mth.lerp(compostProgress, b,  109);  // default green is
 
-            RenderUtil.renderFlatSpriteLerp(builder, stack, barrel.compost / 1000.0f, r, g, b, sprite, light, 2.0f, 1.0f, 14.0f);
+            RenderUtil.renderFlatSpriteLerp(builder, stack, barrel.compost / 1000.0f, r, g, b, sprite, light, 2.0f, BarrelBlock.BARREL_FLUID_BOTTOM, BarrelBlock.BARREL_FLUID_TOP);
         }
     }
 }

@@ -19,6 +19,8 @@
 package thedarkcolour.exdeorum.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -26,6 +28,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -34,11 +37,14 @@ import org.jetbrains.annotations.Nullable;
 import thedarkcolour.exdeorum.blockentity.BarrelBlockEntity;
 import thedarkcolour.exdeorum.registry.EBlockEntities;
 
-public class BarrelBlock extends EBlock {
+public class BarrelBlock extends ETankBlock {
+    public static final float BARREL_FLUID_BOTTOM = 1f / 16f;
+    public static final float BARREL_FLUID_TOP = 14f / 16f;
+
     public static final VoxelShape SHAPE = Shapes.join(
-        box(1, 0, 1, 15, 16, 15),
-        box(2, 1, 2, 14, 16, 14),
-        BooleanOp.ONLY_FIRST
+            box(1, 0, 1, 15, 16, 15),
+            box(2, 1, 2, 14, 16, 14),
+            BooleanOp.ONLY_FIRST
     );
 
     public BarrelBlock(Properties properties) {
@@ -86,5 +92,11 @@ public class BarrelBlock extends EBlock {
                 barrel.updateFluidTransform();
             }
         }
+    }
+
+    @Override
+    protected boolean isEntityInFluid(Level level, BlockPos pos, Entity entity, float fillRatio) {
+        var fluidTop = Mth.lerp(fillRatio, BARREL_FLUID_BOTTOM, BARREL_FLUID_TOP);
+        return entity.getBoundingBox().intersects(pos.getX() + 0.125, pos.getY() + BARREL_FLUID_BOTTOM, pos.getZ() + 0.125, pos.getX() + 0.875, pos.getY() + fluidTop, pos.getZ() + 0.875);
     }
 }
