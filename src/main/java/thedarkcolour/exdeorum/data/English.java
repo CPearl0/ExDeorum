@@ -59,6 +59,8 @@ class English {
 
         english.add(TranslationKeys.INFESTED_LEAVES_FULLY_INFESTED, "Fully Infested");
 
+        english.add(TranslationKeys.RANDOM_TRIM_DOES_NOT_CONTAIN_UPGRADE, "Does not drop Netherite Upgrade");
+
         english.add(TranslationKeys.ROOT_ADVANCEMENT_TITLE, "Don't Look Down...");
         english.add(TranslationKeys.ROOT_ADVANCEMENT_DESCRIPTION, "Spawn into a SkyBlock void world");
         english.add(TranslationKeys.CROOK_ADVANCEMENT_TITLE, "Give Him The Hook");
@@ -111,6 +113,18 @@ class English {
         english.add(TranslationKeys.REDSTONE_CONTROL_LABEL, "Redstone Mode");
         english.add(TranslationKeys.REDSTONE_CONTROL_MODE, "Mode: ");
         english.add(TranslationKeys.MECHANICAL_HAMMER_SCREEN_TITLE, "Mechanical Hammer");
+
+        english.add(TranslationKeys.BARREL_ADD_COMPOST_SUBTITLE, "Added barrel compost");
+        english.add(TranslationKeys.BARREL_COMPOST_SUBTITLE, "Barrel compost finished");
+        english.add(TranslationKeys.BARREL_MIXING_SUBTITLE, "Barrel mixing finished");
+        english.add(TranslationKeys.BARREL_FLUID_TRANSFORM_SUBTITLE, "Mechanical Hammer");
+        english.add(TranslationKeys.SILK_WORM_DROP_SUBTITLE, "Mechanical Hammer");
+        english.add(TranslationKeys.SILK_WORM_INFEST_SUBTITLE, "Mechanical Hammer");
+        english.add(TranslationKeys.SILK_WORM_EAT_SUBTITLE, "Mechanical Hammer");
+        english.add(TranslationKeys.GRASS_SEEDS_PLACE_SUBTITLE, "Mechanical Hammer");
+        english.add(TranslationKeys.SCULK_CORE_ACTIVATE_SUBTITLE, "Mechanical Hammer");
+        english.add(TranslationKeys.WATERING_CAN_USE_SUBTITLE, "Mechanical Hammer");
+        english.add(TranslationKeys.WATERING_CAN_STOP_SUBTITLE, "Mechanical Hammer");
 
         english.add(DefaultMaterials.VEXING_ARCHWOOD_CRUCIBLE.getBlock(), "Vexing Archwood Crucible");
         english.add(DefaultMaterials.CASCADING_ARCHWOOD_CRUCIBLE.getBlock(), "Cascading Archwood Crucible");

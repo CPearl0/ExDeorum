@@ -86,7 +86,7 @@ public class TranslationKeys {
 
     // Screens
     public static final String MECHANICAL_SIEVE_SCREEN_TITLE = ExDeorum.ID + ".container.mechanical_sieve";
-    public static final String[] REDSTONE_CONTROL_MODES = new String[] {
+    public static final String[] REDSTONE_CONTROL_MODES = new String[]{
             "gui." + ExDeorum.ID + ".redstone_control.always",
             "gui." + ExDeorum.ID + ".redstone_control.unpowered",
             "gui." + ExDeorum.ID + ".redstone_control.powered"
@@ -94,4 +94,17 @@ public class TranslationKeys {
     public static final String REDSTONE_CONTROL_LABEL = "gui." + ExDeorum.ID + ".redstone_control.label";
     public static final String REDSTONE_CONTROL_MODE = "gui." + ExDeorum.ID + ".redstone_control.mode";
     public static final String MECHANICAL_HAMMER_SCREEN_TITLE = ExDeorum.ID + ".container.mechanical_hammer";
+
+    // Sounds
+    public static final String BARREL_ADD_COMPOST_SUBTITLE = "subtitles.exdeorum.barrel.add_compost";
+    public static final String BARREL_COMPOST_SUBTITLE = "subtitles.exdeorum.barrel.compost_finish";
+    public static final String BARREL_MIXING_SUBTITLE = "subtitles.exdeorum.barrel.mixing_finish";
+    public static final String BARREL_FLUID_TRANSFORM_SUBTITLE = "subtitles.exdeorum.barrel.fluid_transform";
+    public static final String SILK_WORM_DROP_SUBTITLE = "subtitles.exdeorum.silk_worm.drop";
+    public static final String SILK_WORM_INFEST_SUBTITLE = "subtitles.exdeorum.silk_worm.infest";
+    public static final String SILK_WORM_EAT_SUBTITLE = "subtitles.exdeorum.silk_worm.eat";
+    public static final String GRASS_SEEDS_PLACE_SUBTITLE = "subtitles.exdeorum.grass_seeds.place";
+    public static final String SCULK_CORE_ACTIVATE_SUBTITLE = "subtitles.exdeorum.sculk_core.activate";
+    public static final String WATERING_CAN_USE_SUBTITLE = "subtitles.exdeorum.watering_can.use";
+    public static final String WATERING_CAN_STOP_SUBTITLE = "subtitles.exdeorum.watering_can.stop";
 }
