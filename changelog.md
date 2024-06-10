@@ -1,3 +1,9 @@
+## Ex Deorum 1.37
+- Fix issue with Inventory Tweaks item restocking for sieves
+- Fix sieving not using more than 64 sieves at a time when high sieve ranges were enabled
+- Fix desync bug with barrels that sometimes happens when emptying/filling with a bucket
+- Fix overriding Superflat world type
+
 ## Ex Deorum 1.36
 - Add config options to prevent barrels and crucibles from collecting rainwater
 - Fluids in barrels and crucibles now affect mobs standing inside them
