@@ -27,9 +27,11 @@ import net.minecraft.client.gui.screens.worldselection.WorldCreationUiState;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Unit;
+import net.minecraft.world.level.levelgen.presets.WorldPreset;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
@@ -62,6 +64,8 @@ public class ClientHandler {
     public static final ResourceLocation OAK_BARREL_COMPOSTING = new ResourceLocation(ExDeorum.ID, "item/oak_barrel_composting");
     // This is set to true whenever the server tells a client to do so, then set back to false after cache is refreshed.
     public static boolean needsRecipeCacheRefresh;
+    // This is used to prevent Ex Deorum from resetting world type when trying to configure Superflat, Single Biome, etc.
+    public static Holder<WorldPreset> originalDefaultWorldPreset;
 
     public static void register() {
         var modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -152,8 +156,18 @@ public class ClientHandler {
     // Sets Ex Deorum world type as default, or use SkyBlock Builder if it is installed
     private static void onScreenOpen(ScreenEvent.Opening event) {
         if (event.getNewScreen() instanceof CreateWorldScreen screen && EConfig.COMMON.setVoidWorldAsDefault.get()) {
-            var ctx = screen.getUiState().getSettings();
-            screen.getUiState().setWorldType(new WorldCreationUiState.WorldTypeEntry(ctx.worldgenLoadContext().registryOrThrow(Registries.WORLD_PRESET).getHolder(ASMHooks.overrideDefaultWorldPreset()).orElse(null)));
+            var uiState = screen.getUiState();
+
+            var originalPreset = uiState.getWorldType().preset();
+            if (originalPreset != null) {
+                if (originalDefaultWorldPreset == null) {
+                    originalDefaultWorldPreset = originalPreset;
+                }
+                if (originalDefaultWorldPreset.unwrapKey().equals(originalPreset.unwrapKey())) {
+                    var voidWorldPreset = uiState.getSettings().worldgenLoadContext().registryOrThrow(Registries.WORLD_PRESET).getHolder(ASMHooks.overrideDefaultWorldPreset()).orElse(null);
+                    uiState.setWorldType(new WorldCreationUiState.WorldTypeEntry(voidWorldPreset));
+                }
+            }
         }
     }
 
