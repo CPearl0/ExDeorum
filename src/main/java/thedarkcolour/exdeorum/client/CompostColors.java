@@ -23,7 +23,6 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonPrimitive;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.NativeImage;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 import it.unimi.dsi.fastutil.objects.ObjectSet;
@@ -64,11 +63,12 @@ import java.util.stream.Collectors;
 // ExDeorum comes with a precomputed list of vanilla colors, since textures don't exist on the server.
 // However, modded textures usually DO exist on the server, so their colors can be computed by the server once
 // and stored in a file which can be configured by the user after the fact.
+// todo optimize
 public class CompostColors {
     public static final String VANILLA_COMPOST_COLORS_FILE = "vanilla_compost_colors.txt";
     public static final Path COMPOST_COLORS_CONFIGS = Paths.get("config/exdeorum/compost_colors");
 
-    public static final Object2ObjectMap<Item, Vector3i> COLORS = new Object2ObjectOpenHashMap<>();
+    public static final Object2ObjectOpenHashMap<Item, Vector3i> COLORS = new Object2ObjectOpenHashMap<>();
     public static final Vector3i DEFAULT_COLOR = new Vector3i(53, 168, 42);
 
     public static void loadColors() {

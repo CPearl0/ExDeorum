@@ -171,6 +171,8 @@ public final class EventHandler {
     }
 
     private static void onCommonSetup(FMLCommonSetupEvent event) {
+        CompostColors.loadColors();
+
         event.enqueueWork(() -> {
             FluidInteractionRegistry.addInteraction(ForgeMod.LAVA_TYPE.get(), new FluidInteractionRegistry.InteractionInformation(
                     EFluids.WITCH_WATER_TYPE.get(),
