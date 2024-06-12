@@ -1,3 +1,8 @@
+## Ex Deorum 1.38
+- Fix rendering bug with Crucible and Barrel
+- Fix lag spike when inserting compost into the Barrel for the first time
+- Fix June barrel config
+
 ## Ex Deorum 1.37
 - Fix issue with Inventory Tweaks item restocking for sieves
 - Fix sieving not using more than 64 sieves at a time when high sieve ranges were enabled
