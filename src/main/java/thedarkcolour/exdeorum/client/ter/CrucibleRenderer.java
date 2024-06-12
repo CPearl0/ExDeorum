@@ -73,7 +73,7 @@ public class CrucibleRenderer implements BlockEntityRenderer<AbstractCrucibleBlo
                     if (color == -1) color = 0xffffff;
 
                     // todo 3D solids for transparent crucibles
-                    face.renderFlatSpriteLerp(buffers, stack, solids, (color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff, light, 2.0f, AbstractCrucibleBlock.CRUCIBLE_FLUID_BOTTOM, AbstractCrucibleBlock.CRUCIBLE_FLUID_TOP);
+                    face.renderFlatSpriteLerp(buffers, stack, solids, (color >> 16) & 0xff, (color >> 8) & 0xff, color & 0xff, light, 2.0f, AbstractCrucibleBlock.CRUCIBLE_FLUID_BOTTOM * 16f, AbstractCrucibleBlock.CRUCIBLE_FLUID_TOP * 16f);
                 }
             }
         });

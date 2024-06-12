@@ -130,7 +130,7 @@ public class BarrelRenderer implements BlockEntityRenderer<BarrelBlockEntity> {
             g = (int) Mth.lerp(compostProgress, g, 169);  // default green is
             b = (int) Mth.lerp(compostProgress, b,  109);  // default green is
 
-            RenderUtil.renderFlatSpriteLerp(builder, stack, barrel.compost / 1000.0f, r, g, b, sprite, light, 2.0f, BarrelBlock.BARREL_FLUID_BOTTOM, BarrelBlock.BARREL_FLUID_TOP);
+            RenderUtil.renderFlatSpriteLerp(builder, stack, barrel.compost / 1000.0f, r, g, b, sprite, light, 2.0f, BarrelBlock.BARREL_FLUID_BOTTOM * 16f, BarrelBlock.BARREL_FLUID_TOP * 16f);
         }
     }
 }
