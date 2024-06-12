@@ -39,6 +39,7 @@ import thedarkcolour.exdeorum.ExDeorum;
 import thedarkcolour.exdeorum.block.BarrelBlock;
 import thedarkcolour.exdeorum.blockentity.BarrelBlockEntity;
 import thedarkcolour.exdeorum.client.RenderUtil;
+import thedarkcolour.exdeorum.config.EConfig;
 
 public class BarrelRenderer implements BlockEntityRenderer<BarrelBlockEntity> {
     public static final ResourceLocation COMPOST_DIRT_TEXTURE = new ResourceLocation(ExDeorum.ID, "block/compost_dirt");
@@ -114,7 +115,7 @@ public class BarrelRenderer implements BlockEntityRenderer<BarrelBlockEntity> {
             float compostProgress = barrel.progress;
             int r, g, b;
 
-            if (ExDeorum.IS_JUNE && barrel.getLevel() != null) {
+            if (ExDeorum.IS_JUNE && EConfig.CLIENT.rainbowCompostDuringJune.get() && barrel.getLevel() != null) {
                 var rainbow = RenderUtil.getRainbowColor(barrel.getLevel().getGameTime(), partialTicks);
                 r = rainbow.getRed();
                 g = rainbow.getGreen();
