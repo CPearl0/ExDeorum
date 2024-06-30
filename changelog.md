@@ -1,3 +1,9 @@
+## Ex Deorum 1.39
+- Fixed third-person render of compressed hammers
+- Fixed crash with Croptopia
+- Witch water buckets now dispense properly
+- Wooden crucibles/barrels are now furnace fuels
+
 ## Ex Deorum 1.38
 - Fix rendering bug with Crucible and Barrel
 - Fix lag spike when inserting compost into the Barrel for the first time
