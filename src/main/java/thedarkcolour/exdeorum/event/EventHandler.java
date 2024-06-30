@@ -31,12 +31,14 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
+import net.minecraft.world.entity.ai.behavior.GoAndGiveItemsToTarget;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.XoroshiroRandomSource;
@@ -187,6 +189,8 @@ public final class EventHandler {
 
             BarrelMaterial.loadTransparentBlocks();
             AbstractCrucibleMaterial.loadTransparentBlocks();
+
+            DispenserBlock.registerBehavior(EItems.WITCH_WATER_BUCKET.get(), DispenserBlock.DISPENSER_REGISTRY.get(Items.WATER_BUCKET));
         });
     }
 

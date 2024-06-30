@@ -130,7 +130,7 @@ public class EItems {
     public static final RegistryObject<Item> PORCELAIN_WITCH_WATER_BUCKET = ITEMS.register("porcelain_witch_water_bucket", () -> new PorcelainBucket(EFluids.WITCH_WATER, props().craftRemainder(PORCELAIN_BUCKET.get()).stacksTo(1)));
 
     // Fluids
-    public static final RegistryObject<Item> WITCH_WATER_BUCKET = ITEMS.register("witch_water_bucket", () -> new WitchWaterBucketItem(props().craftRemainder(Items.BUCKET).stacksTo(1)));
+    public static final RegistryObject<Item> WITCH_WATER_BUCKET = ITEMS.register("witch_water_bucket", () -> new BucketItem(EFluids.WITCH_WATER, props().craftRemainder(Items.BUCKET).stacksTo(1)));
 
     public static RegistryObject<Item> registerSimpleItem(String name) {
         return ITEMS.register(name, () -> new Item(props()));
