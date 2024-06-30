@@ -77,8 +77,8 @@ public class InfestedLeavesBlockEntity extends EBlockEntity {
         if (state.is(BlockTags.LEAVES) && state.getBlock() != EBlocks.INFESTED_LEAVES.get()) {
             // Spread and keep distance/persistent properties
             level.setBlock(targetPos, EBlocks.INFESTED_LEAVES.get().defaultBlockState()
-                    .setValue(LeavesBlock.DISTANCE, state.getValue(LeavesBlock.DISTANCE))
-                    .setValue(LeavesBlock.PERSISTENT, state.getValue(LeavesBlock.PERSISTENT)),
+                    .setValue(LeavesBlock.DISTANCE, state.hasProperty(LeavesBlock.DISTANCE) ? state.getValue(LeavesBlock.DISTANCE) : 0)
+                    .setValue(LeavesBlock.PERSISTENT, state.hasProperty(LeavesBlock.PERSISTENT) ? state.getValue(LeavesBlock.PERSISTENT) : false),
                     2);
             var te = level.getBlockEntity(targetPos);
 
