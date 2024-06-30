@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.RegistryObject;
+import thedarkcolour.exdeorum.registry.EItems;
 
 public abstract class AbstractMaterial implements ItemLike {
     // The sound this block makes (a string corresponding to a field in SoundType or a JSON object with the five sound events used to create a sound type)
@@ -50,6 +51,10 @@ public abstract class AbstractMaterial implements ItemLike {
     }
 
     protected abstract Block createBlock();
+
+    protected BlockItem createBlockItem(Block block) {
+        return new BlockItem(block, EItems.props());
+    }
 
     protected BlockBehaviour.Properties props() {
         var properties = BlockBehaviour.Properties.of().strength(this.strength).sound(this.soundType);

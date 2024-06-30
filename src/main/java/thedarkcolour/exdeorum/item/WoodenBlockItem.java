@@ -16,27 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package thedarkcolour.exdeorum.material;
+package thedarkcolour.exdeorum.item;
 
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
-import thedarkcolour.exdeorum.block.WaterCrucibleBlock;
-import thedarkcolour.exdeorum.item.WoodenBlockItem;
-import thedarkcolour.exdeorum.registry.EItems;
+import org.jetbrains.annotations.Nullable;
 
-public class WaterCrucibleMaterial extends AbstractCrucibleMaterial {
-    protected WaterCrucibleMaterial(SoundType soundType, float strength, boolean needsCorrectTool, int mapColor, String requiredModId, boolean transparent) {
-        super(soundType, strength, needsCorrectTool, mapColor, requiredModId, transparent);
+// BlockItem except it is furnace fuel
+public class WoodenBlockItem extends BlockItem {
+    public WoodenBlockItem(Block block, Properties properties) {
+        super(block, properties);
     }
 
     @Override
-    protected Block createBlock() {
-        return new WaterCrucibleBlock(props().noOcclusion());
-    }
-
-    @Override
-    protected BlockItem createBlockItem(Block block) {
-        return new WoodenBlockItem(block, EItems.props());
+    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+        return 300;
     }
 }

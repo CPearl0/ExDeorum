@@ -18,10 +18,13 @@
 
 package thedarkcolour.exdeorum.material;
 
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import org.jetbrains.annotations.Nullable;
 import thedarkcolour.exdeorum.block.BarrelBlock;
+import thedarkcolour.exdeorum.item.WoodenBlockItem;
+import thedarkcolour.exdeorum.registry.EItems;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -46,6 +49,15 @@ public class BarrelMaterial extends AbstractMaterial {
         var props = props().noOcclusion();
         if (!this.fireproof) props.ignitedByLava();
         return new BarrelBlock(props);
+    }
+
+    @Override
+    protected BlockItem createBlockItem(Block block) {
+        if (!this.fireproof) {
+            return new WoodenBlockItem(block, EItems.props());
+        } else {
+            return super.createBlockItem(block);
+        }
     }
 
     @Nullable

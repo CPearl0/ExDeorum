@@ -22,6 +22,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -98,7 +99,7 @@ public class MaterialRegistry<M extends AbstractMaterial> implements Iterable<M>
         }
 
         material.block = EBlocks.BLOCKS.register(id, material::createBlock);
-        material.item = EItems.registerItemBlock(material.block);
+        material.item = EItems.ITEMS.register(id, () -> material.createBlockItem(material.block.get()));
         this.values.add(material);
     }
 
